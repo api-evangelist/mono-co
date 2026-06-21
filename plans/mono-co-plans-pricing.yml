@@ -1,0 +1,139 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Mono
+providerId: mono-co
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- Open Banking
+- Financial Data
+- Payments
+- Direct Debit
+- Africa
+- Plans
+description: >-
+  Mono prices its open-banking products on a usage / sales-led basis rather
+  than published self-serve tiers. Connect financial-data products (account
+  linking, transactions, statements, identity, income, balance) are commonly
+  billed per successful linked account or per data pull, while DirectPay and
+  Direct Debit collections carry a per-transaction fee or percentage. Exact
+  unit prices are negotiated per customer and are not publicly reconciled in
+  this artifact.
+notes: >-
+  Mono does not publish a transparent self-serve price list for the API.
+  Pricing is quoted by Mono sales based on product mix and volume. The
+  entries below mark price as not-published and reconciled is false; verify
+  current rates directly with Mono during reconciliation.
+sources:
+- https://mono.co
+- https://docs.mono.co/docs/quickstart
+- https://mono.co/pricing
+plans:
+- id: mono-co-connect
+  name: Connect (Financial Data)
+  type: usage
+  description: >-
+    Account linking plus access to transactions, statements, identity,
+    income, and balance for linked accounts. Billed per linked account or
+    per data request on a sales-led basis.
+  entries:
+  - label: Account Linking
+    name: account_linking
+    type: usage
+    metric: linked_accounts
+    limit: -1
+    timeFrame: month
+    geo: africa
+    unit: 1
+    price: contact sales (per successful linked account)
+    userMultiplied: false
+  - label: Transactions / Statements
+    name: transactions_statements
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: africa
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  - label: Identity / Income
+    name: identity_income
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: africa
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Account Linking and Auth
+  - name: Account Information
+  - name: Transactions and Statements
+  - name: Identity and Income
+- id: mono-co-directpay
+  name: DirectPay
+  type: usage
+  description: >-
+    One-time bank-to-bank payment collection, typically priced per
+    successful transaction or as a percentage of value. Not publicly
+    reconciled.
+  entries:
+  - label: One-time Payment
+    name: directpay_transaction
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: africa
+    unit: 1
+    price: contact sales (per-transaction / percentage)
+    userMultiplied: false
+  elements:
+  - name: DirectPay Payments
+- id: mono-co-direct-debit
+  name: Direct Debit
+  type: usage
+  description: >-
+    Recurring mandate-based collections, typically priced per successful
+    debit or as a percentage of value. Not publicly reconciled.
+  entries:
+  - label: Mandate Debit
+    name: direct_debit_transaction
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: africa
+    unit: 1
+    price: contact sales (per-debit / percentage)
+    userMultiplied: false
+  elements:
+  - name: Direct Debit and Mandates
+- id: mono-co-enterprise
+  name: Enterprise / Sales-Led
+  type: enterprise
+  description: >-
+    Negotiated agreements for volume, additional products (lookup / KYC,
+    payouts, telco data), and dedicated support. Contact Mono sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: africa
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Lookup / KYC
+  - name: Payouts
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

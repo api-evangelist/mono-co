@@ -1,0 +1,56 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Mono
+providerId: mono-co
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- Open Banking
+- Financial Data
+- Payments
+- Direct Debit
+- Africa
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Mono enforces per-application throttling on its REST API, scoped by the
+  secret application key passed in the mono-sec-key header. Specific
+  requests-per-minute and daily quotas are not published in the public
+  documentation and vary by environment (test vs live) and account
+  agreement; they are not reconciled in this artifact.
+notes: >-
+  Mono's public docs do not publish numeric rate-limit values. Confirm
+  per-endpoint and per-environment limits with Mono during reconciliation.
+  Treat HTTP 429 as the throttled signal and honor any Retry-After header.
+sources:
+- https://docs.mono.co/docs/quickstart
+- https://docs.mono.co/api
+responseCodes:
+  throttled: 429
+limits:
+- name: Requests Per Minute
+  scope: application
+  metric: requests
+  limit: see provider documentation
+  notes: Per-application throttling keyed on the mono-sec-key; value not published.
+- name: Data Pull Frequency
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Connect data endpoints (transactions, statements) may be cached or rate-limited per linked account; real-time pulls use x-real-time headers.
+- name: Test vs Live
+  scope: application
+  metric: requests
+  limit: see provider documentation
+  notes: Test keys may carry separate, lower limits than live keys.
+policies:
+- name: Per-Application Throttling
+  description: Limits are applied against the secret app key; separate keys for test and live environments.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on HTTP 429.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,198 @@
+aid: mono-co
+url: https://raw.githubusercontent.com/api-evangelist/mono-co/refs/heads/main/apis.yml
+name: Mono
+kind: company
+description: Mono is an African open-banking platform that lets businesses access bank
+  and financial data and collect recurring payments through a single API. The Mono
+  REST API at api.withmono.com covers account linking (Connect), transactions, statements,
+  identity, income, and balance, plus DirectPay one-time payments and Direct Debit
+  mandates, secured with a mono-sec-key header.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Open Banking
+- Financial Data
+- Payments
+- Direct Debit
+- Africa
+created: '2026-06-21'
+modified: '2026-06-21'
+specificationVersion: '0.19'
+apis:
+- aid: mono-co:account-linking-auth
+  name: Account Linking and Auth
+  tags:
+  - Account Linking
+  - Authorization
+  - Connect
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.mono.co/docs/financial-data/overview
+  baseURL: https://api.withmono.com
+  properties:
+  - url: https://docs.mono.co/docs/financial-data/integration-guide
+    type: Documentation
+  - url: https://docs.mono.co/api/bank-data/authorisation/initiate-account-linking
+    type: APIReference
+  - url: openapi/mono-co-openapi.yml
+    type: OpenAPI
+  - url: collections/mono-co.postman_collection.json
+    type: PostmanCollection
+  - url: collections/mono-co.opencollection.json
+    type: OpenCollection
+  description: Initiate Mono Connect account linking and exchange the returned code
+    for a persistent account id, instantiating the bank-data connection used by all
+    downstream account endpoints.
+- aid: mono-co:account-information
+  name: Account Information
+  tags:
+  - Account Information
+  - Balance
+  - Connect
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.mono.co/docs/financial-data/overview
+  baseURL: https://api.withmono.com
+  properties:
+  - url: https://docs.mono.co/docs/financial-data/overview
+    type: Documentation
+  - url: https://docs.mono.co/api/bank-data/accounts/details
+    type: APIReference
+  - url: openapi/mono-co-openapi.yml
+    type: OpenAPI
+  - url: collections/mono-co.postman_collection.json
+    type: PostmanCollection
+  - url: collections/mono-co.opencollection.json
+    type: OpenCollection
+  description: Retrieve account details and a near-real-time account balance for a
+    linked account by its account id.
+- aid: mono-co:transactions-statements
+  name: Transactions and Statements
+  tags:
+  - Transactions
+  - Statements
+  - Financial Data
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.mono.co/api/bank-data/transactions
+  baseURL: https://api.withmono.com
+  properties:
+  - url: https://docs.mono.co/api/bank-data/transactions
+    type: Documentation
+  - url: https://docs.mono.co/api/bank-data/transactions
+    type: APIReference
+  - url: openapi/mono-co-openapi.yml
+    type: OpenAPI
+  - url: collections/mono-co.postman_collection.json
+    type: PostmanCollection
+  - url: collections/mono-co.opencollection.json
+    type: OpenCollection
+  description: Pull money-in and money-out transactions with date, type, and narration
+    filters, and retrieve a customer's bank statement in JSON or PDF form for a linked
+    account.
+- aid: mono-co:identity-income
+  name: Identity and Income
+  tags:
+  - Identity
+  - Income
+  - KYC
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.mono.co/api/bank-data/accounts/identity
+  baseURL: https://api.withmono.com
+  properties:
+  - url: https://docs.mono.co/api/bank-data/accounts/identity
+    type: Documentation
+  - url: https://docs.mono.co/api/bank-data/accounts/income
+    type: APIReference
+  - url: openapi/mono-co-openapi.yml
+    type: OpenAPI
+  - url: collections/mono-co.postman_collection.json
+    type: PostmanCollection
+  - url: collections/mono-co.opencollection.json
+    type: OpenCollection
+  description: Verify a linked account holder's identity (name, phone, date of birth,
+    BVN) and retrieve income signals including estimated salary and income sources
+    derived from financial data.
+- aid: mono-co:directpay-payments
+  name: DirectPay Payments
+  tags:
+  - Payments
+  - DirectPay
+  - Bank Transfer
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.mono.co/docs/payments/overview
+  baseURL: https://api.withmono.com
+  properties:
+  - url: https://docs.mono.co/docs/payments/overview
+    type: Documentation
+  - url: https://docs.mono.co/api/directpay/initiate
+    type: APIReference
+  - url: openapi/mono-co-openapi.yml
+    type: OpenAPI
+  - url: collections/mono-co.postman_collection.json
+    type: PostmanCollection
+  - url: collections/mono-co.opencollection.json
+    type: OpenCollection
+  description: Initiate one-time bank-to-bank DirectPay payments and verify their
+    status, returning a hosted payment link for the customer to authorize.
+- aid: mono-co:direct-debit-mandates
+  name: Direct Debit and Mandates
+  tags:
+  - Direct Debit
+  - Mandates
+  - Recurring Payments
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.mono.co/docs/payments/direct-debit/overview
+  baseURL: https://api.withmono.com
+  properties:
+  - url: https://docs.mono.co/docs/payments/direct-debit/overview
+    type: Documentation
+  - url: https://docs.mono.co/api/direct-debit/mandate/initiate-mandate-authorisation
+    type: APIReference
+  - url: openapi/mono-co-openapi.yml
+    type: OpenAPI
+  - url: collections/mono-co.postman_collection.json
+    type: PostmanCollection
+  - url: collections/mono-co.opencollection.json
+    type: OpenCollection
+  description: Create customers, set up fixed or variable direct-debit mandates on
+    a customer's bank account, run a confirmation-of-funds balance inquiry, and debit
+    an authorized mandate for recurring collections.
+- aid: mono-co:webhooks
+  name: Webhooks
+  tags:
+  - Webhooks
+  - Events
+  - Notifications
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.mono.co/docs/webhooks
+  baseURL: https://api.withmono.com
+  properties:
+  - url: https://docs.mono.co/docs/webhooks
+    type: Documentation
+  - url: https://docs.mono.co/docs/payments/direct-debit/webhook-events
+    type: APIReference
+  - url: openapi/mono-co-openapi.yml
+    type: OpenAPI
+  - url: collections/mono-co.postman_collection.json
+    type: PostmanCollection
+  - url: collections/mono-co.opencollection.json
+    type: OpenCollection
+  description: Server-to-server webhook callbacks for Connect account events
+    (connected, updated, reauthorisation required, unlinked) and payment events
+    (DirectPay and Direct Debit success and failure), delivered as POST requests
+    with a shared event/data/timestamp payload.
+common:
+- type: GitHubOrganization
+  url: https://github.com/withmono
+- type: LinkedIn
+  url: https://www.linkedin.com/company/mono-hq
+- type: Website
+  url: https://mono.co
+- type: Documentation
+  url: https://docs.mono.co
+- type: Plans
+  url: plans/mono-co-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/mono-co-rate-limits.yml
+- type: FinOps
+  url: finops/mono-co-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

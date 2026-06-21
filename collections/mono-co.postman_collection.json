@@ -1,0 +1,309 @@
+{
+  "info": {
+    "name": "Mono API",
+    "description": {
+      "content": "Mono open-banking REST API. Connect financial data, DirectPay payments, and Direct Debit mandates. Authenticated with the mono-sec-key header.",
+      "type": "text/plain"
+    },
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.withmono.com"
+    },
+    {
+      "key": "monoSecKey",
+      "value": "<your-secret-key>"
+    },
+    {
+      "key": "accountId",
+      "value": "<account-id>"
+    },
+    {
+      "key": "mandateId",
+      "value": "<mandate-id>"
+    },
+    {
+      "key": "reference",
+      "value": "<payment-reference>"
+    }
+  ],
+  "item": [
+    {
+      "name": "Account Linking",
+      "item": [
+        {
+          "name": "Initiate account linking",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "mono-sec-key", "value": "{{monoSecKey}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/accounts/initiate",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "accounts", "initiate"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer\": {\n    \"name\": \"Samuel Olamide\",\n    \"email\": \"samuel@example.com\"\n  },\n  \"meta\": { \"ref\": \"99008877TEST\" },\n  \"scope\": \"auth\",\n  \"redirect_url\": \"https://mono.co\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Exchange token (auth)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "mono-sec-key", "value": "{{monoSecKey}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/accounts/auth",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "accounts", "auth"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"code_xyz\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Account Information",
+      "item": [
+        {
+          "name": "Get account details",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "mono-sec-key", "value": "{{monoSecKey}}" } ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/accounts/{{accountId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "accounts", "{{accountId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get account balance",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "mono-sec-key", "value": "{{monoSecKey}}" } ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/accounts/{{accountId}}/balance",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "accounts", "{{accountId}}", "balance"]
+            }
+          }
+        },
+        {
+          "name": "Unlink account",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "mono-sec-key", "value": "{{monoSecKey}}" } ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/accounts/{{accountId}}/unlink",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "accounts", "{{accountId}}", "unlink"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions and Statements",
+      "item": [
+        {
+          "name": "Get transactions",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "mono-sec-key", "value": "{{monoSecKey}}" } ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/accounts/{{accountId}}/transactions?paginate=false",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "accounts", "{{accountId}}", "transactions"],
+              "query": [ { "key": "paginate", "value": "false" } ]
+            }
+          }
+        },
+        {
+          "name": "Get bank statement",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "mono-sec-key", "value": "{{monoSecKey}}" } ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/accounts/{{accountId}}/statement?period=last6months&output=json",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "accounts", "{{accountId}}", "statement"],
+              "query": [
+                { "key": "period", "value": "last6months" },
+                { "key": "output", "value": "json" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Identity and Income",
+      "item": [
+        {
+          "name": "Get identity",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "mono-sec-key", "value": "{{monoSecKey}}" } ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/accounts/{{accountId}}/identity",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "accounts", "{{accountId}}", "identity"]
+            }
+          }
+        },
+        {
+          "name": "Get income",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "mono-sec-key", "value": "{{monoSecKey}}" } ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/accounts/{{accountId}}/income",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "accounts", "{{accountId}}", "income"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "DirectPay",
+      "item": [
+        {
+          "name": "Initiate payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "mono-sec-key", "value": "{{monoSecKey}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/payments/initiate",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "payments", "initiate"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 20000,\n  \"type\": \"onetime-debit\",\n  \"method\": \"account\",\n  \"description\": \"Order payment\",\n  \"reference\": \"ref-12345\",\n  \"redirect_url\": \"https://mono.co\",\n  \"customer\": {\n    \"email\": \"samuel@example.com\",\n    \"phone\": \"08012345678\",\n    \"address\": \"Lagos\",\n    \"identity\": { \"type\": \"bvn\", \"number\": \"00000000000\" }\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Verify payment",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "mono-sec-key", "value": "{{monoSecKey}}" } ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/payments/verify/{{reference}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "payments", "verify", "{{reference}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Direct Debit",
+      "item": [
+        {
+          "name": "Create customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "mono-sec-key", "value": "{{monoSecKey}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "customers"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"samuel@example.com\",\n  \"phone\": \"08012345678\",\n  \"address\": \"Lagos\",\n  \"type\": \"individual\",\n  \"first_name\": \"Samuel\",\n  \"last_name\": \"Olamide\",\n  \"identity\": { \"type\": \"bvn\", \"number\": \"00000000000\" }\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "List customers",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "mono-sec-key", "value": "{{monoSecKey}}" } ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "customers"]
+            }
+          }
+        },
+        {
+          "name": "Initiate mandate authorisation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "mono-sec-key", "value": "{{monoSecKey}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2/payments/initiate-mandate",
+              "host": ["{{baseUrl}}"],
+              "path": ["v2", "payments", "initiate-mandate"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 1000000,\n  \"type\": \"recurring-debit\",\n  \"method\": \"mandate\",\n  \"mandate_type\": \"emandate\",\n  \"debit_type\": \"variable\",\n  \"description\": \"Subscription mandate\",\n  \"reference\": \"mandate-ref-001\",\n  \"redirect_url\": \"https://mono.co\",\n  \"customer\": { \"id\": \"cus_xyz\" },\n  \"start_date\": \"2026-07-01\",\n  \"end_date\": \"2027-07-01\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Mandate balance inquiry",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "mono-sec-key", "value": "{{monoSecKey}}" } ],
+            "url": {
+              "raw": "{{baseUrl}}/v3/payments/mandates/{{mandateId}}/balance",
+              "host": ["{{baseUrl}}"],
+              "path": ["v3", "payments", "mandates", "{{mandateId}}", "balance"]
+            }
+          }
+        },
+        {
+          "name": "Debit a mandate",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "mono-sec-key", "value": "{{monoSecKey}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v3/payments/mandates/{{mandateId}}/debit",
+              "host": ["{{baseUrl}}"],
+              "path": ["v3", "payments", "mandates", "{{mandateId}}", "debit"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 50000,\n  \"reference\": \"debit-ref-001\",\n  \"narration\": \"Monthly subscription\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

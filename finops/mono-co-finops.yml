@@ -1,0 +1,105 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Mono
+providerId: mono-co
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- Open Banking
+- Financial Data
+- Payments
+- Direct Debit
+- Africa
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Mono spend. Mono bills usage on a sales-led basis: Connect
+  financial-data products are typically charged per linked account or per
+  data pull, while DirectPay and Direct Debit collections carry a
+  per-transaction fee or percentage of value. Public unit prices are not
+  available, so cost meters below are structural and unit rates are not
+  reconciled.
+notes: >-
+  Mono does not publish per-unit prices; obtain a rate card from Mono sales
+  to populate unit costs during reconciliation. Amounts on the wire are in
+  the lowest currency denomination (e.g. kobo for NGN).
+sources:
+- https://mono.co
+- https://docs.mono.co
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Mono
+serviceCategory: Financial Services
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: NGN
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Mono API
+  ServiceCategory: Financial Services
+  ProviderName: Mono
+  PublisherName: Mono
+  InvoiceIssuerName: Mono
+  BillingCurrency: NGN
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: linked_accounts
+  description: Successfully linked bank accounts via Mono Connect, typically billed per account.
+  unit: accounts
+  aggregation: sum
+  dimensions:
+  - application
+  - product
+- name: data_requests
+  description: Connect data pulls (transactions, statements, identity, income, balance), potentially metered per request.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - application
+  - endpoint
+- name: directpay_transactions
+  description: One-time DirectPay collections, billed per successful transaction or as a percentage of value.
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - application
+  - status
+- name: direct_debit_transactions
+  description: Recurring mandate debits, billed per successful debit or as a percentage of value.
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - application
+  - mandate
+- name: lookup_verifications
+  description: Optional lookup / KYC verifications (BVN, NIN, CAC, etc.), billed per verification where used.
+  unit: verifications
+  aggregation: sum
+  dimensions:
+  - application
+  - type
+principles:
+- name: Visibility
+  description: Pull Mono dashboard usage and settlement reports; track linked accounts, data pulls, and collection volume per app key.
+- name: Allocation
+  description: Use separate app keys per product line or business unit to attribute Connect vs payments spend.
+- name: Optimization
+  description: Cache Connect data where freshness allows to avoid redundant real-time pulls; reconcile collection fees against value collected.
+- name: Accountability
+  description: Assign owners per app key; review collection success rates and data-pull volume monthly against budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,901 @@
+openapi: 3.0.1
+info:
+  title: Mono API
+  description: >-
+    Specification of the Mono open-banking API. Mono lets businesses link
+    customer bank accounts (Connect) to read transactions, statements,
+    identity, income, and balance, and to collect payments via DirectPay
+    one-time transfers and Direct Debit mandates. All requests are
+    authenticated with the secret application key supplied in the
+    mono-sec-key header. Monetary amounts are expressed in the lowest
+    denomination of the currency (e.g. kobo for NGN).
+  termsOfService: https://mono.co/legal
+  contact:
+    name: Mono Support
+    url: https://docs.mono.co
+    email: hi@mono.co
+  version: '2.0'
+servers:
+  - url: https://api.withmono.com
+    description: Mono production API
+security:
+  - monoSecKey: []
+tags:
+  - name: Account Linking
+    description: Initiate Connect account linking and exchange a code for an account id.
+  - name: Account Information
+    description: Account details and balance for a linked account.
+  - name: Transactions and Statements
+    description: Transactions and bank statements for a linked account.
+  - name: Identity and Income
+    description: Identity verification and income signals for a linked account.
+  - name: DirectPay
+    description: One-time bank-to-bank payments.
+  - name: Direct Debit
+    description: Customers, mandates, balance inquiry, and recurring debits.
+paths:
+  /v2/accounts/initiate:
+    post:
+      operationId: initiateAccountLinking
+      tags:
+        - Account Linking
+      summary: Initiate account linking
+      description: >-
+        Starts a Mono Connect account-linking session and returns a hosted
+        link that instantiates the Connect widget for the customer to
+        authorize access to their bank account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateAccountRequest'
+      responses:
+        '200':
+          description: Account-linking session created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiateAccountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/accounts/auth:
+    post:
+      operationId: exchangeToken
+      tags:
+        - Account Linking
+      summary: Exchange token (auth)
+      description: >-
+        Exchanges the short-lived authorization code returned by the Connect
+        widget for a persistent account id used to query account data. The
+        authorization code expires after 10 minutes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExchangeTokenRequest'
+      responses:
+        '200':
+          description: Account id returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeTokenResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/accounts/{id}:
+    get:
+      operationId: getAccountDetails
+      tags:
+        - Account Information
+      summary: Get account details
+      description: Retrieves account holder, institution, and balance details for a linked account.
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: Account details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetails'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v2/accounts/{id}/balance:
+    get:
+      operationId: getAccountBalance
+      tags:
+        - Account Information
+      summary: Get account balance
+      description: Returns the near-real-time balance for a linked account.
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: Account balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/accounts/{id}/transactions:
+    get:
+      operationId: getAccountTransactions
+      tags:
+        - Transactions and Statements
+      summary: Get transactions
+      description: >-
+        Lists money-in and money-out transactions for a linked account, with
+        optional filters for date range, type, narration, and pagination.
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - name: start
+          in: query
+          description: Start date (DD-MM-YYYY) of the transaction window.
+          schema:
+            type: string
+        - name: end
+          in: query
+          description: End date (DD-MM-YYYY) of the transaction window.
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Filter by transaction type.
+          schema:
+            type: string
+            enum: [debit, credit]
+        - name: narration
+          in: query
+          description: Filter by transaction narration substring.
+          schema:
+            type: string
+        - name: paginate
+          in: query
+          description: Whether to paginate the results.
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number when pagination is enabled.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Transaction list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/accounts/{id}/statement:
+    get:
+      operationId: getAccountStatement
+      tags:
+        - Transactions and Statements
+      summary: Get bank statement
+      description: >-
+        Retrieves the account holder's bank statement. Returns JSON by
+        default; set output=pdf to generate a downloadable PDF statement.
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - name: period
+          in: query
+          description: Statement period, e.g. last6months.
+          schema:
+            type: string
+        - name: output
+          in: query
+          description: Response format.
+          schema:
+            type: string
+            enum: [json, pdf]
+      responses:
+        '200':
+          description: Statement data or PDF job reference.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Statement'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/accounts/{id}/identity:
+    get:
+      operationId: getAccountIdentity
+      tags:
+        - Identity and Income
+      summary: Get identity
+      description: Returns identity details (name, phone, BVN, date of birth) for a linked account holder.
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: Identity details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Identity'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/accounts/{id}/income:
+    get:
+      operationId: getAccountIncome
+      tags:
+        - Identity and Income
+      summary: Get income
+      description: Returns income signals such as average monthly income, estimated salary, and income sources.
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: Income signals.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Income'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/accounts/{id}/unlink:
+    post:
+      operationId: unlinkAccount
+      tags:
+        - Account Information
+      summary: Unlink account
+      description: Unlinks a previously linked account, revoking further data access.
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: Account unlinked.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusMessage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/payments/initiate:
+    post:
+      operationId: initiatePayment
+      tags:
+        - DirectPay
+      summary: Initiate DirectPay payment
+      description: >-
+        Initiates a one-time bank-to-bank DirectPay payment and returns a
+        hosted payment link and reference for the customer to authorize.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiatePaymentRequest'
+      responses:
+        '200':
+          description: Payment initiated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiatePaymentResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/payments/verify/{reference}:
+    get:
+      operationId: verifyPayment
+      tags:
+        - DirectPay
+      summary: Verify DirectPay payment
+      description: Verifies the status of a DirectPay payment by its transaction reference.
+      parameters:
+        - name: reference
+          in: path
+          required: true
+          description: The payment transaction reference.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v2/customers:
+    post:
+      operationId: createCustomer
+      tags:
+        - Direct Debit
+      summary: Create a customer
+      description: Creates an individual or business customer record used for direct-debit mandates.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerRequest'
+      responses:
+        '201':
+          description: Customer created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    get:
+      operationId: listCustomers
+      tags:
+        - Direct Debit
+      summary: List customers
+      description: Lists customers created on the account.
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Customer list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/payments/initiate-mandate:
+    post:
+      operationId: initiateMandate
+      tags:
+        - Direct Debit
+      summary: Initiate mandate authorisation
+      description: >-
+        Sets up a fixed or variable direct-debit mandate on a customer's bank
+        account and returns a hosted authorisation link. Each mandate setup is
+        a one-time authorization process.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateMandateRequest'
+      responses:
+        '200':
+          description: Mandate authorisation initiated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiateMandateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v3/payments/mandates/{id}/balance:
+    get:
+      operationId: mandateBalanceInquiry
+      tags:
+        - Direct Debit
+      summary: Mandate balance inquiry
+      description: >-
+        Confirmation-of-funds check against a mandated account before
+        initiating a debit.
+      parameters:
+        - $ref: '#/components/parameters/MandateId'
+      responses:
+        '200':
+          description: Balance inquiry result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v3/payments/mandates/{id}/debit:
+    post:
+      operationId: debitMandate
+      tags:
+        - Direct Debit
+      summary: Debit a mandate
+      description: Debits a bank account that already has an approved direct-debit mandate.
+      parameters:
+        - $ref: '#/components/parameters/MandateId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DebitMandateRequest'
+      responses:
+        '200':
+          description: Debit submitted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    monoSecKey:
+      type: apiKey
+      in: header
+      name: mono-sec-key
+      description: Secret application key issued in the Mono dashboard.
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The linked account id returned by the exchange-token endpoint.
+      schema:
+        type: string
+    MandateId:
+      name: id
+      in: path
+      required: true
+      description: The direct-debit mandate id.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    InitiateAccountRequest:
+      type: object
+      properties:
+        customer:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+        meta:
+          type: object
+          properties:
+            ref:
+              type: string
+        scope:
+          type: string
+          example: auth
+        redirect_url:
+          type: string
+    InitiateAccountResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            mono_url:
+              type: string
+            customer:
+              type: string
+            meta:
+              type: object
+    ExchangeTokenRequest:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: The authorization code returned by the Connect widget.
+    ExchangeTokenResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The persistent account id.
+    AccountDetails:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            data_status:
+              type: string
+            auth_method:
+              type: string
+        account:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            currency:
+              type: string
+            type:
+              type: string
+            account_number:
+              type: string
+            balance:
+              type: integer
+            bvn:
+              type: string
+            institution:
+              type: object
+              properties:
+                name:
+                  type: string
+                bank_code:
+                  type: string
+                type:
+                  type: string
+    Balance:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            account_number:
+              type: string
+            balance:
+              type: integer
+            currency:
+              type: string
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        narration:
+          type: string
+        amount:
+          type: integer
+        type:
+          type: string
+          enum: [debit, credit]
+        balance:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        category:
+          type: string
+    TransactionList:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+        meta:
+          type: object
+          properties:
+            total:
+              type: integer
+            page:
+              type: integer
+    Statement:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            account:
+              type: object
+            balance:
+              type: integer
+            transactions:
+              type: array
+              items:
+                $ref: '#/components/schemas/Transaction'
+    Identity:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            full_name:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            gender:
+              type: string
+            dob:
+              type: string
+            bvn:
+              type: string
+            marital_status:
+              type: string
+    Income:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            average_monthly_income:
+              type: number
+            estimated_salary:
+              type: number
+            yearly_income:
+              type: number
+            income_sources:
+              type: array
+              items:
+                type: object
+                properties:
+                  employer:
+                    type: string
+                  amount:
+                    type: number
+                  frequency:
+                    type: string
+    InitiatePaymentRequest:
+      type: object
+      required:
+        - amount
+        - type
+        - reference
+      properties:
+        amount:
+          type: integer
+          description: Amount in the lowest denomination (e.g. kobo).
+        type:
+          type: string
+          example: onetime-debit
+        method:
+          type: string
+          example: account
+        description:
+          type: string
+        reference:
+          type: string
+        redirect_url:
+          type: string
+        customer:
+          type: object
+          properties:
+            email:
+              type: string
+            phone:
+              type: string
+            address:
+              type: string
+            identity:
+              type: object
+              properties:
+                type:
+                  type: string
+                number:
+                  type: string
+        meta:
+          type: object
+    InitiatePaymentResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            mono_url:
+              type: string
+            type:
+              type: string
+            reference:
+              type: string
+            customer:
+              type: string
+    PaymentStatus:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            reference:
+              type: string
+            amount:
+              type: integer
+            status:
+              type: string
+              enum: [successful, failed, pending, abandoned]
+            currency:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+    CreateCustomerRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        identity:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
+        type:
+          type: string
+          enum: [individual, business]
+        first_name:
+          type: string
+        last_name:
+          type: string
+        business_name:
+          type: string
+    Customer:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+            type:
+              type: string
+    CustomerList:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+    InitiateMandateRequest:
+      type: object
+      required:
+        - amount
+        - type
+        - mandate_type
+        - reference
+      properties:
+        amount:
+          type: integer
+        type:
+          type: string
+          example: recurring-debit
+        method:
+          type: string
+          example: mandate
+        mandate_type:
+          type: string
+          enum: [emandate, signed, gsm]
+        debit_type:
+          type: string
+          enum: [fixed, variable]
+        description:
+          type: string
+        reference:
+          type: string
+        redirect_url:
+          type: string
+        customer:
+          type: object
+          properties:
+            id:
+              type: string
+        account_number:
+          type: string
+        bank_code:
+          type: string
+        start_date:
+          type: string
+        end_date:
+          type: string
+        meta:
+          type: object
+    InitiateMandateResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            mono_url:
+              type: string
+            mandate_type:
+              type: string
+            reference:
+              type: string
+            status:
+              type: string
+    DebitMandateRequest:
+      type: object
+      required:
+        - amount
+        - reference
+      properties:
+        amount:
+          type: integer
+        reference:
+          type: string
+        narration:
+          type: string
+    StatusMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string

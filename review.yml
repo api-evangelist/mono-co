@@ -1,0 +1,105 @@
+aid: mono-co
+name: Mono
+review:
+  question: Does Mono expose a documented public WebSocket or streaming API?
+  answer: false
+  date: '2026-06-21'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    Mono's only event-driven surface is outbound HTTP webhooks (Mono delivers
+    POST callbacks to a URL configured in the dashboard). There is no
+    server-push stream the client subscribes to (no WebSocket, no SSE), so no
+    AsyncAPI document was authored. Webhooks are documented in apis.yml as a
+    sub-API and described in this review, but they are request/response HTTP
+    callbacks rather than a streaming transport.
+disambiguation: |
+  This catalog covers Mono (mono.co), the African open-banking / financial-data
+  and payments company whose REST API is hosted at https://api.withmono.com and
+  authenticated with the mono-sec-key header. It is NOT to be confused with:
+  the Mono open-source .NET/C# runtime (mono-project.com); the Mono monorepo or
+  "mono" Node module; Mono fonts; or any unrelated product using the word
+  "mono". All endpoints and behaviors here are sourced from docs.mono.co.
+findings:
+  summary: |
+    Mono does not publish a documented public WebSocket or streaming API. The
+    Mono platform is a REST API under https://api.withmono.com covering Connect
+    financial data (account linking/auth, account details, balance,
+    transactions, statements, identity, income, unlink), DirectPay one-time
+    payments, and Direct Debit mandates (create customer, initiate mandate,
+    balance inquiry, debit). Asynchronous notification is delivered via
+    outbound HTTP webhooks configured on the Mono dashboard, not via a
+    bidirectional or subscribe-style stream. Transaction "real-time" behavior
+    is a header flag (x-real-time) on the REST transactions call, not a stream.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.withmono.com
+      documented: true
+    - protocol: Webhook
+      scheme: https
+      note: Outbound HTTP POST callbacks to a customer-configured URL with a shared event/data/timestamp payload. Not a client-subscribed stream.
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in the Mono Connect, DirectPay, or Direct Debit API references as of the review date.
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events stream is documented.
+  endpointsConfirmedRest:
+    - POST https://api.withmono.com/v2/accounts/initiate
+    - POST https://api.withmono.com/v2/accounts/auth
+    - GET  https://api.withmono.com/v2/accounts/{id}
+    - GET  https://api.withmono.com/v2/accounts/{id}/balance
+    - GET  https://api.withmono.com/v2/accounts/{id}/transactions
+    - GET  https://api.withmono.com/v2/accounts/{id}/statement
+    - GET  https://api.withmono.com/v2/accounts/{id}/identity
+    - GET  https://api.withmono.com/v2/accounts/{id}/income
+    - POST https://api.withmono.com/v2/accounts/{id}/unlink
+    - POST https://api.withmono.com/v2/payments/initiate
+    - GET  https://api.withmono.com/v2/payments/verify/{reference}
+    - POST https://api.withmono.com/v2/customers
+    - GET  https://api.withmono.com/v2/customers
+    - POST https://api.withmono.com/v2/payments/initiate-mandate
+    - GET  https://api.withmono.com/v3/payments/mandates/{id}/balance
+    - POST https://api.withmono.com/v3/payments/mandates/{id}/debit
+  webhookEvents:
+    - mono.events.account_connected
+    - mono.events.account_updated
+    - mono.events.reauthorisation_required
+    - mono.events.account_unlinked
+    - directpay.payment_successful
+    - directpay.payment_failed
+    - direct_debit.payment_successful
+    - direct_debit.payment_failed
+    - mandate.ready
+    - note: Event names are modeled from Mono's webhook documentation; verify exact identifiers and full catalog against docs.mono.co/docs/webhooks during reconciliation.
+sources:
+  - url: https://docs.mono.co/api
+    type: APIReference
+    note: REST API reference; all documented endpoints are HTTPS REST under api.withmono.com.
+  - url: https://docs.mono.co/api/bank-data/transactions
+    type: APIReference
+    note: Transactions use GET /v2/accounts/{id}/transactions; x-real-time header toggles fresh pull, not a stream.
+  - url: https://docs.mono.co/docs/payments/overview
+    type: Documentation
+    note: DirectPay one-time payments via POST /v2/payments/initiate and verify.
+  - url: https://docs.mono.co/docs/payments/direct-debit/overview
+    type: Documentation
+    note: Direct Debit mandates; debit via /v3/payments/mandates/{id}/debit.
+  - url: https://docs.mono.co/docs/webhooks
+    type: Documentation
+    note: Webhooks are outbound HTTP POST callbacks; no WebSocket or SSE described.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE streaming surface exists. The only event mechanism is
+    outbound HTTP webhooks, which are modeled as a Webhooks sub-API in apis.yml
+    and documented in this review. No AsyncAPI document was authored because
+    there is no client-subscribed stream to model.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
