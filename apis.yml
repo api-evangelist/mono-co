@@ -179,6 +179,10 @@ apis:
     (DirectPay and Direct Debit success and failure), delivered as POST requests
     with a shared event/data/timestamp payload.
 common:
+- type: DomainSecurity
+  url: security/mono-co-domain-security.yml
+- type: Authentication
+  url: authentication/mono-co-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/withmono
 - type: LinkedIn
@@ -193,6 +197,8 @@ common:
   url: rate-limits/mono-co-rate-limits.yml
 - type: FinOps
   url: finops/mono-co-finops.yml
+- url: https://mono.co/blog
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
