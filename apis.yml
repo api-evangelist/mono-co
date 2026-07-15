@@ -179,6 +179,8 @@ apis:
     (DirectPay and Direct Debit success and failure), delivered as POST requests
     with a shared event/data/timestamp payload.
 common:
+- type: AgenticAccess
+  url: agentic-access/mono-co-agentic-access.yml
 - type: DomainSecurity
   url: security/mono-co-domain-security.yml
 - type: Authentication
