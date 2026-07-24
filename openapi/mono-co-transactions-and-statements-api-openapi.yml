@@ -1,0 +1,188 @@
+openapi: 3.0.1
+info:
+  title: Mono Account Information Transactions and Statements API
+  description: Specification of the Mono open-banking API. Mono lets businesses link customer bank accounts (Connect) to read transactions, statements, identity, income, and balance, and to collect payments via DirectPay one-time transfers and Direct Debit mandates. All requests are authenticated with the secret application key supplied in the mono-sec-key header. Monetary amounts are expressed in the lowest denomination of the currency (e.g. kobo for NGN).
+  termsOfService: https://mono.co/legal
+  contact:
+    name: Mono Support
+    url: https://docs.mono.co
+    email: hi@mono.co
+  version: '2.0'
+servers:
+- url: https://api.withmono.com
+  description: Mono production API
+security:
+- monoSecKey: []
+tags:
+- name: Transactions and Statements
+  description: Transactions and bank statements for a linked account.
+paths:
+  /v2/accounts/{id}/transactions:
+    get:
+      operationId: getAccountTransactions
+      tags:
+      - Transactions and Statements
+      summary: Get transactions
+      description: Lists money-in and money-out transactions for a linked account, with optional filters for date range, type, narration, and pagination.
+      parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - name: start
+        in: query
+        description: Start date (DD-MM-YYYY) of the transaction window.
+        schema:
+          type: string
+      - name: end
+        in: query
+        description: End date (DD-MM-YYYY) of the transaction window.
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Filter by transaction type.
+        schema:
+          type: string
+          enum:
+          - debit
+          - credit
+      - name: narration
+        in: query
+        description: Filter by transaction narration substring.
+        schema:
+          type: string
+      - name: paginate
+        in: query
+        description: Whether to paginate the results.
+        schema:
+          type: boolean
+      - name: page
+        in: query
+        description: Page number when pagination is enabled.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Transaction list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/accounts/{id}/statement:
+    get:
+      operationId: getAccountStatement
+      tags:
+      - Transactions and Statements
+      summary: Get bank statement
+      description: Retrieves the account holder's bank statement. Returns JSON by default; set output=pdf to generate a downloadable PDF statement.
+      parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - name: period
+        in: query
+        description: Statement period, e.g. last6months.
+        schema:
+          type: string
+      - name: output
+        in: query
+        description: Response format.
+        schema:
+          type: string
+          enum:
+          - json
+          - pdf
+      responses:
+        '200':
+          description: Statement data or PDF job reference.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Statement'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    TransactionList:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+        meta:
+          type: object
+          properties:
+            total:
+              type: integer
+            page:
+              type: integer
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        narration:
+          type: string
+        amount:
+          type: integer
+        type:
+          type: string
+          enum:
+          - debit
+          - credit
+        balance:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        category:
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    Statement:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            account:
+              type: object
+            balance:
+              type: integer
+            transactions:
+              type: array
+              items:
+                $ref: '#/components/schemas/Transaction'
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The linked account id returned by the exchange-token endpoint.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    monoSecKey:
+      type: apiKey
+      in: header
+      name: mono-sec-key
+      description: Secret application key issued in the Mono dashboard.

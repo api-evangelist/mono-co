@@ -1,0 +1,135 @@
+openapi: 3.0.1
+info:
+  title: Mono Account Information Account Linking API
+  description: Specification of the Mono open-banking API. Mono lets businesses link customer bank accounts (Connect) to read transactions, statements, identity, income, and balance, and to collect payments via DirectPay one-time transfers and Direct Debit mandates. All requests are authenticated with the secret application key supplied in the mono-sec-key header. Monetary amounts are expressed in the lowest denomination of the currency (e.g. kobo for NGN).
+  termsOfService: https://mono.co/legal
+  contact:
+    name: Mono Support
+    url: https://docs.mono.co
+    email: hi@mono.co
+  version: '2.0'
+servers:
+- url: https://api.withmono.com
+  description: Mono production API
+security:
+- monoSecKey: []
+tags:
+- name: Account Linking
+  description: Initiate Connect account linking and exchange a code for an account id.
+paths:
+  /v2/accounts/initiate:
+    post:
+      operationId: initiateAccountLinking
+      tags:
+      - Account Linking
+      summary: Initiate account linking
+      description: Starts a Mono Connect account-linking session and returns a hosted link that instantiates the Connect widget for the customer to authorize access to their bank account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateAccountRequest'
+      responses:
+        '200':
+          description: Account-linking session created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiateAccountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/accounts/auth:
+    post:
+      operationId: exchangeToken
+      tags:
+      - Account Linking
+      summary: Exchange token (auth)
+      description: Exchanges the short-lived authorization code returned by the Connect widget for a persistent account id used to query account data. The authorization code expires after 10 minutes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExchangeTokenRequest'
+      responses:
+        '200':
+          description: Account id returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeTokenResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    InitiateAccountRequest:
+      type: object
+      properties:
+        customer:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+        meta:
+          type: object
+          properties:
+            ref:
+              type: string
+        scope:
+          type: string
+          example: auth
+        redirect_url:
+          type: string
+    ExchangeTokenResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The persistent account id.
+    ExchangeTokenRequest:
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          type: string
+          description: The authorization code returned by the Connect widget.
+    InitiateAccountResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            mono_url:
+              type: string
+            customer:
+              type: string
+            meta:
+              type: object
+  responses:
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    monoSecKey:
+      type: apiKey
+      in: header
+      name: mono-sec-key
+      description: Secret application key issued in the Mono dashboard.

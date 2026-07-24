@@ -1,0 +1,351 @@
+openapi: 3.0.1
+info:
+  title: Mono Account Information Direct Debit API
+  description: Specification of the Mono open-banking API. Mono lets businesses link customer bank accounts (Connect) to read transactions, statements, identity, income, and balance, and to collect payments via DirectPay one-time transfers and Direct Debit mandates. All requests are authenticated with the secret application key supplied in the mono-sec-key header. Monetary amounts are expressed in the lowest denomination of the currency (e.g. kobo for NGN).
+  termsOfService: https://mono.co/legal
+  contact:
+    name: Mono Support
+    url: https://docs.mono.co
+    email: hi@mono.co
+  version: '2.0'
+servers:
+- url: https://api.withmono.com
+  description: Mono production API
+security:
+- monoSecKey: []
+tags:
+- name: Direct Debit
+  description: Customers, mandates, balance inquiry, and recurring debits.
+paths:
+  /v2/customers:
+    post:
+      operationId: createCustomer
+      tags:
+      - Direct Debit
+      summary: Create a customer
+      description: Creates an individual or business customer record used for direct-debit mandates.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerRequest'
+      responses:
+        '201':
+          description: Customer created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    get:
+      operationId: listCustomers
+      tags:
+      - Direct Debit
+      summary: List customers
+      description: Lists customers created on the account.
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Customer list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/payments/initiate-mandate:
+    post:
+      operationId: initiateMandate
+      tags:
+      - Direct Debit
+      summary: Initiate mandate authorisation
+      description: Sets up a fixed or variable direct-debit mandate on a customer's bank account and returns a hosted authorisation link. Each mandate setup is a one-time authorization process.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitiateMandateRequest'
+      responses:
+        '200':
+          description: Mandate authorisation initiated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitiateMandateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v3/payments/mandates/{id}/balance:
+    get:
+      operationId: mandateBalanceInquiry
+      tags:
+      - Direct Debit
+      summary: Mandate balance inquiry
+      description: Confirmation-of-funds check against a mandated account before initiating a debit.
+      parameters:
+      - $ref: '#/components/parameters/MandateId'
+      responses:
+        '200':
+          description: Balance inquiry result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v3/payments/mandates/{id}/debit:
+    post:
+      operationId: debitMandate
+      tags:
+      - Direct Debit
+      summary: Debit a mandate
+      description: Debits a bank account that already has an approved direct-debit mandate.
+      parameters:
+      - $ref: '#/components/parameters/MandateId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DebitMandateRequest'
+      responses:
+        '200':
+          description: Debit submitted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+            type:
+              type: string
+    DebitMandateRequest:
+      type: object
+      required:
+      - amount
+      - reference
+      properties:
+        amount:
+          type: integer
+        reference:
+          type: string
+        narration:
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    InitiateMandateRequest:
+      type: object
+      required:
+      - amount
+      - type
+      - mandate_type
+      - reference
+      properties:
+        amount:
+          type: integer
+        type:
+          type: string
+          example: recurring-debit
+        method:
+          type: string
+          example: mandate
+        mandate_type:
+          type: string
+          enum:
+          - emandate
+          - signed
+          - gsm
+        debit_type:
+          type: string
+          enum:
+          - fixed
+          - variable
+        description:
+          type: string
+        reference:
+          type: string
+        redirect_url:
+          type: string
+        customer:
+          type: object
+          properties:
+            id:
+              type: string
+        account_number:
+          type: string
+        bank_code:
+          type: string
+        start_date:
+          type: string
+        end_date:
+          type: string
+        meta:
+          type: object
+    PaymentStatus:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            reference:
+              type: string
+            amount:
+              type: integer
+            status:
+              type: string
+              enum:
+              - successful
+              - failed
+              - pending
+              - abandoned
+            currency:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+    InitiateMandateResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            mono_url:
+              type: string
+            mandate_type:
+              type: string
+            reference:
+              type: string
+            status:
+              type: string
+    CustomerList:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+    CreateCustomerRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        identity:
+          type: object
+          properties:
+            type:
+              type: string
+            number:
+              type: string
+        type:
+          type: string
+          enum:
+          - individual
+          - business
+        first_name:
+          type: string
+        last_name:
+          type: string
+        business_name:
+          type: string
+    Balance:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            account_number:
+              type: string
+            balance:
+              type: integer
+            currency:
+              type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    MandateId:
+      name: id
+      in: path
+      required: true
+      description: The direct-debit mandate id.
+      schema:
+        type: string
+  securitySchemes:
+    monoSecKey:
+      type: apiKey
+      in: header
+      name: mono-sec-key
+      description: Secret application key issued in the Mono dashboard.
