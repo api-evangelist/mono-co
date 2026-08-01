@@ -1,0 +1,24 @@
+{
+  "provider": "mono-co",
+  "sources": [
+    "mono-co-account-information-api-openapi.yml",
+    "mono-co-account-linking-api-openapi.yml",
+    "mono-co-direct-debit-api-openapi.yml",
+    "mono-co-directpay-api-openapi.yml",
+    "mono-co-identity-and-income-api-openapi.yml",
+    "mono-co-transactions-and-statements-api-openapi.yml"
+  ],
+  "outputs": [
+    "mono-co-account-information-api-openapi.yml",
+    "mono-co-account-linking-api-openapi.yml",
+    "mono-co-direct-debit-api-openapi.yml",
+    "mono-co-directpay-api-openapi.yml",
+    "mono-co-identity-and-income-api-openapi.yml",
+    "mono-co-transactions-and-statements-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
