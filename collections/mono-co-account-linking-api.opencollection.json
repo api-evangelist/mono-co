@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mono Account Information Account Linking API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "mono-sec-key",
+      "value": "{{mono-sec-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account Linking",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate account linking",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.withmono.com/v2/accounts/initiate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Starts a Mono Connect account-linking session and returns a hosted link that instantiates the Connect widget for the customer to authorize access to their bank account."
+        },
+        {
+          "info": {
+            "name": "Exchange token (auth)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.withmono.com/v2/accounts/auth",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Exchanges the short-lived authorization code returned by the Connect widget for a persistent account id used to query account data. The authorization code expires after 10 minutes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

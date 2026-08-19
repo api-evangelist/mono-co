@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mono Account Information Identity and Income API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "mono-sec-key",
+      "value": "{{mono-sec-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Identity and Income",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get identity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.withmono.com/v2/accounts/:id/identity",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The linked account id returned by the exchange-token endpoint."
+              }
+            ]
+          },
+          "docs": "Returns identity details (name, phone, BVN, date of birth) for a linked account holder."
+        },
+        {
+          "info": {
+            "name": "Get income",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.withmono.com/v2/accounts/:id/income",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The linked account id returned by the exchange-token endpoint."
+              }
+            ]
+          },
+          "docs": "Returns income signals such as average monthly income, estimated salary, and income sources."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

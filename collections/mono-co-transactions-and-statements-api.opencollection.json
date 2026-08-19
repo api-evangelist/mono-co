@@ -1,0 +1,112 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mono Account Information Transactions and Statements API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "mono-sec-key",
+      "value": "{{mono-sec-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions and Statements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.withmono.com/v2/accounts/:id/transactions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The linked account id returned by the exchange-token endpoint."
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Start date (DD-MM-YYYY) of the transaction window."
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "End date (DD-MM-YYYY) of the transaction window."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by transaction type."
+              },
+              {
+                "name": "narration",
+                "value": "",
+                "type": "query",
+                "description": "Filter by transaction narration substring."
+              },
+              {
+                "name": "paginate",
+                "value": "",
+                "type": "query",
+                "description": "Whether to paginate the results."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number when pagination is enabled."
+              }
+            ]
+          },
+          "docs": "Lists money-in and money-out transactions for a linked account, with optional filters for date range, type, narration, and pagination."
+        },
+        {
+          "info": {
+            "name": "Get bank statement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.withmono.com/v2/accounts/:id/statement",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The linked account id returned by the exchange-token endpoint."
+              },
+              {
+                "name": "period",
+                "value": "",
+                "type": "query",
+                "description": "Statement period, e.g. last6months."
+              },
+              {
+                "name": "output",
+                "value": "",
+                "type": "query",
+                "description": "Response format."
+              }
+            ]
+          },
+          "docs": "Retrieves the account holder's bank statement. Returns JSON by default; set output=pdf to generate a downloadable PDF statement."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
