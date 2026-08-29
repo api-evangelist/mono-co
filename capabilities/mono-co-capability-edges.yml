@@ -1,0 +1,45 @@
+slug: mono-co
+provider: Mono
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: DirectPay
+  spec_file: mono-co-directpay-api-openapi.yml
+  capability_id: BC-1340.10
+  capability_id_l1: BC-1340
+  capability_name: Payment Initiation Management
+  confidence: 0.9
+  evidence: POST /v2/payments/initiate initiatePayment Initiate DirectPay payment; GET /v2/payments/verify/{reference}
+    verifyPayment
+  reason: One-time bank transfer initiation and verification is plainly payment initiation management.
+- tag: Direct Debit
+  spec_file: mono-co-direct-debit-api-openapi.yml
+  capability_id: BC-1340.10
+  capability_id_l1: BC-1340
+  capability_name: Payment Initiation Management
+  confidence: 0.85
+  evidence: POST /v2/payments/initiate-mandate initiateMandate Initiate mandate authorisation; POST /v3/payments/mandates/{id}/debit
+    debitMandate
+  reason: Direct debit mandate authorisation and debiting is payment instruction capture and authorisation
+    — payment initiation management.
+- tag: Account Information
+  spec_file: mono-co-account-information-api-openapi.yml
+  capability_id: BC-1300.40
+  capability_id_l1: BC-1300
+  capability_name: Customer Information Management
+  confidence: 0.7
+  evidence: GET /v2/accounts/{id}/balance getAccountBalance Get account balance; POST /v2/accounts/{id}/unlink
+    unlinkAccount
+  reason: Open-banking AISP surface exposing linked bank account details and balances — banking customer
+    account information access. Sub-capability choice is uncertain between customer information and deposit
+    account management; L1 Banking Customer Management is the safest anchor.
