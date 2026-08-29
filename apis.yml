@@ -7,6 +7,18 @@ description: Mono is an African open-banking platform that lets businesses acces
   REST API at api.withmono.com covers account linking (Connect), transactions, statements,
   identity, income, and balance, plus DirectPay one-time payments and Direct Debit
   mandates, secured with a mono-sec-key header.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: enterprise
   onboarding: self-serve
