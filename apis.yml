@@ -259,7 +259,7 @@ apis:
   humanURL: https://docs.mono.co/docs/financial-data/overview
   baseURL: https://api.withmono.com
   tags:
-  - Transactions & Statements
+  - Transactions and Statements
   tags_raw:
   - Transactions and Statements
   properties:
