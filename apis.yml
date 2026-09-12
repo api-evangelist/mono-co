@@ -2,11 +2,7 @@ aid: mono-co
 url: https://raw.githubusercontent.com/api-evangelist/mono-co/refs/heads/main/apis.yml
 name: Mono
 kind: company
-description: Mono is an African open-banking platform that lets businesses access bank
-  and financial data and collect recurring payments through a single API. The Mono
-  REST API at api.withmono.com covers account linking (Connect), transactions, statements,
-  identity, income, and balance, plus DirectPay one-time payments and Direct Debit
-  mandates, secured with a mono-sec-key header.
+description: Mono is an African open-banking platform that lets businesses access bank and financial data and collect recurring payments through a single API. The Mono REST API at api.withmono.com covers account linking (Connect), transactions, statements, identity, income, and balance, plus DirectPay one-time payments and Direct Debit mandates, secured with a mono-sec-key header.
 deliveryModel:
   model: saas
   open_source: false
@@ -298,6 +294,166 @@ apis:
     url: https://docs.mono.co/docs/webhooks
   - type: APIReference
     url: https://docs.mono.co/docs/payments/direct-debit/webhook-events
+- aid: mono-co:mono-africa-connect-api
+  name: Mono Connect API
+  description: Account linking authorization and re-authorization.
+  humanURL: https://docs.mono.co/docs/financial-data/overview
+  baseURL: https://api.withmono.com/v2
+  tags:
+  - Connect
+  properties:
+  - type: OpenAPI
+    url: openapi/mono-africa-connect-api-openapi.yml
+  - type: Documentation
+    url: https://docs.mono.co/docs/financial-data/overview
+  - type: APIReference
+    url: https://docs.mono.co/docs/financial-data/connect-link
+  - type: PostmanCollection
+    url: collections/mono-africa.postman_collection.json
+  - type: OpenCollection
+    url: collections/mono-africa.opencollection.json
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/transactions
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/investment/assets
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/accounts/credit-worthiness
+  - type: Documentation
+    url: https://docs.mono.co/docs/payments/overview
+  - type: APIReference
+    url: https://docs.mono.co/api/directpay/initiate
+  - type: Documentation
+    url: https://docs.mono.co/docs/lookup/overview
+  - type: APIReference
+    url: https://docs.mono.co/api/lookup/mashup
+- aid: mono-co:mono-africa-creditworthiness-api
+  name: Mono Creditworthiness API
+  description: Affordability and credit-decisioning analysis.
+  humanURL: https://docs.mono.co/docs/financial-data/overview
+  baseURL: https://api.withmono.com/v2
+  tags:
+  - Creditworthiness
+  properties:
+  - type: OpenAPI
+    url: openapi/mono-africa-creditworthiness-api-openapi.yml
+  - type: Documentation
+    url: https://docs.mono.co/docs/financial-data/overview
+  - type: APIReference
+    url: https://docs.mono.co/docs/financial-data/connect-link
+  - type: PostmanCollection
+    url: collections/mono-africa.postman_collection.json
+  - type: OpenCollection
+    url: collections/mono-africa.opencollection.json
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/transactions
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/investment/assets
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/accounts/credit-worthiness
+  - type: Documentation
+    url: https://docs.mono.co/docs/payments/overview
+  - type: APIReference
+    url: https://docs.mono.co/api/directpay/initiate
+  - type: Documentation
+    url: https://docs.mono.co/docs/lookup/overview
+  - type: APIReference
+    url: https://docs.mono.co/api/lookup/mashup
+- aid: mono-co:mono-africa-financial-data-api
+  name: Mono Financial Data API
+  description: Read financial data from a linked account.
+  humanURL: https://docs.mono.co/docs/financial-data/overview
+  baseURL: https://api.withmono.com/v2
+  tags:
+  - Financial Data
+  properties:
+  - type: OpenAPI
+    url: openapi/mono-africa-financial-data-api-openapi.yml
+  - type: Documentation
+    url: https://docs.mono.co/docs/financial-data/overview
+  - type: APIReference
+    url: https://docs.mono.co/docs/financial-data/connect-link
+  - type: PostmanCollection
+    url: collections/mono-africa.postman_collection.json
+  - type: OpenCollection
+    url: collections/mono-africa.opencollection.json
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/transactions
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/investment/assets
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/accounts/credit-worthiness
+  - type: Documentation
+    url: https://docs.mono.co/docs/payments/overview
+  - type: APIReference
+    url: https://docs.mono.co/api/directpay/initiate
+  - type: Documentation
+    url: https://docs.mono.co/docs/lookup/overview
+  - type: APIReference
+    url: https://docs.mono.co/api/lookup/mashup
+- aid: mono-co:mono-africa-investment-api
+  name: Mono Investment API
+  description: Investment holdings for a linked account.
+  humanURL: https://docs.mono.co/docs/financial-data/overview
+  baseURL: https://api.withmono.com/v2
+  tags:
+  - Investment
+  properties:
+  - type: OpenAPI
+    url: openapi/mono-africa-investment-api-openapi.yml
+  - type: Documentation
+    url: https://docs.mono.co/docs/financial-data/overview
+  - type: APIReference
+    url: https://docs.mono.co/docs/financial-data/connect-link
+  - type: PostmanCollection
+    url: collections/mono-africa.postman_collection.json
+  - type: OpenCollection
+    url: collections/mono-africa.opencollection.json
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/transactions
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/investment/assets
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/accounts/credit-worthiness
+  - type: Documentation
+    url: https://docs.mono.co/docs/payments/overview
+  - type: APIReference
+    url: https://docs.mono.co/api/directpay/initiate
+  - type: Documentation
+    url: https://docs.mono.co/docs/lookup/overview
+  - type: APIReference
+    url: https://docs.mono.co/api/lookup/mashup
+- aid: mono-co:mono-africa-lookup-api
+  name: Mono Lookup API
+  description: Identity and data verification for KYC/KYB.
+  humanURL: https://docs.mono.co/docs/financial-data/overview
+  baseURL: https://api.withmono.com/v2
+  tags:
+  - Lookup
+  properties:
+  - type: OpenAPI
+    url: openapi/mono-africa-lookup-api-openapi.yml
+  - type: Documentation
+    url: https://docs.mono.co/docs/financial-data/overview
+  - type: APIReference
+    url: https://docs.mono.co/docs/financial-data/connect-link
+  - type: PostmanCollection
+    url: collections/mono-africa.postman_collection.json
+  - type: OpenCollection
+    url: collections/mono-africa.opencollection.json
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/transactions
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/investment/assets
+  - type: APIReference
+    url: https://docs.mono.co/api/bank-data/accounts/credit-worthiness
+  - type: Documentation
+    url: https://docs.mono.co/docs/payments/overview
+  - type: APIReference
+    url: https://docs.mono.co/api/directpay/initiate
+  - type: Documentation
+    url: https://docs.mono.co/docs/lookup/overview
+  - type: APIReference
+    url: https://docs.mono.co/api/lookup/mashup
 common:
 - type: CapabilityMap
   url: capabilities/mono-co-capability-edges.yml
