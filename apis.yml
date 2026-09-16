@@ -294,48 +294,16 @@ apis:
     url: https://docs.mono.co/docs/webhooks
   - type: APIReference
     url: https://docs.mono.co/docs/payments/direct-debit/webhook-events
-- aid: mono-co:mono-africa-connect-api
-  name: Mono Connect API
-  description: Account linking authorization and re-authorization.
-  humanURL: https://docs.mono.co/docs/financial-data/overview
-  baseURL: https://api.withmono.com/v2
-  tags:
-  - Connect
-  properties:
-  - type: OpenAPI
-    url: openapi/mono-africa-connect-api-openapi.yml
-  - type: Documentation
-    url: https://docs.mono.co/docs/financial-data/overview
-  - type: APIReference
-    url: https://docs.mono.co/docs/financial-data/connect-link
-  - type: PostmanCollection
-    url: collections/mono-africa.postman_collection.json
-  - type: OpenCollection
-    url: collections/mono-africa.opencollection.json
-  - type: APIReference
-    url: https://docs.mono.co/api/bank-data/transactions
-  - type: APIReference
-    url: https://docs.mono.co/api/bank-data/investment/assets
-  - type: APIReference
-    url: https://docs.mono.co/api/bank-data/accounts/credit-worthiness
-  - type: Documentation
-    url: https://docs.mono.co/docs/payments/overview
-  - type: APIReference
-    url: https://docs.mono.co/api/directpay/initiate
-  - type: Documentation
-    url: https://docs.mono.co/docs/lookup/overview
-  - type: APIReference
-    url: https://docs.mono.co/api/lookup/mashup
-- aid: mono-co:mono-africa-creditworthiness-api
+- aid: mono-co:mono-co-creditworthiness-api
   name: Mono Creditworthiness API
   description: Affordability and credit-decisioning analysis.
   humanURL: https://docs.mono.co/docs/financial-data/overview
-  baseURL: https://api.withmono.com/v2
+  baseURL: https://api.withmono.com
   tags:
   - Creditworthiness
   properties:
   - type: OpenAPI
-    url: openapi/mono-africa-creditworthiness-api-openapi.yml
+    url: openapi/mono-co-creditworthiness-api-openapi.yml
   - type: Documentation
     url: https://docs.mono.co/docs/financial-data/overview
   - type: APIReference
@@ -358,16 +326,16 @@ apis:
     url: https://docs.mono.co/docs/lookup/overview
   - type: APIReference
     url: https://docs.mono.co/api/lookup/mashup
-- aid: mono-co:mono-africa-financial-data-api
+- aid: mono-co:mono-co-financial-data-api
   name: Mono Financial Data API
   description: Read financial data from a linked account.
   humanURL: https://docs.mono.co/docs/financial-data/overview
-  baseURL: https://api.withmono.com/v2
+  baseURL: https://api.withmono.com
   tags:
   - Financial Data
   properties:
   - type: OpenAPI
-    url: openapi/mono-africa-financial-data-api-openapi.yml
+    url: openapi/mono-co-financial-data-api-openapi.yml
   - type: Documentation
     url: https://docs.mono.co/docs/financial-data/overview
   - type: APIReference
@@ -390,16 +358,16 @@ apis:
     url: https://docs.mono.co/docs/lookup/overview
   - type: APIReference
     url: https://docs.mono.co/api/lookup/mashup
-- aid: mono-co:mono-africa-investment-api
+- aid: mono-co:mono-co-investment-api
   name: Mono Investment API
   description: Investment holdings for a linked account.
   humanURL: https://docs.mono.co/docs/financial-data/overview
-  baseURL: https://api.withmono.com/v2
+  baseURL: https://api.withmono.com
   tags:
   - Investment
   properties:
   - type: OpenAPI
-    url: openapi/mono-africa-investment-api-openapi.yml
+    url: openapi/mono-co-investment-api-openapi.yml
   - type: Documentation
     url: https://docs.mono.co/docs/financial-data/overview
   - type: APIReference
@@ -422,16 +390,16 @@ apis:
     url: https://docs.mono.co/docs/lookup/overview
   - type: APIReference
     url: https://docs.mono.co/api/lookup/mashup
-- aid: mono-co:mono-africa-lookup-api
+- aid: mono-co:mono-co-lookup-api
   name: Mono Lookup API
   description: Identity and data verification for KYC/KYB.
   humanURL: https://docs.mono.co/docs/financial-data/overview
-  baseURL: https://api.withmono.com/v2
+  baseURL: https://api.withmono.com
   tags:
   - Lookup
   properties:
   - type: OpenAPI
-    url: openapi/mono-africa-lookup-api-openapi.yml
+    url: openapi/mono-co-lookup-api-openapi.yml
   - type: Documentation
     url: https://docs.mono.co/docs/financial-data/overview
   - type: APIReference
