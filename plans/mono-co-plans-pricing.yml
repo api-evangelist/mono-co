@@ -1,139 +1,57 @@
-specification: API Commons Plans
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
-provider: Mono
-providerId: mono-co
-created: '2026-06-21'
-modified: '2026-06-21'
-reconciled: false
-tags:
-- Open Banking
-- Financial Data
-- Payments
-- Direct Debit
-- Africa
-- Plans
-description: >-
-  Mono prices its open-banking products on a usage / sales-led basis rather
-  than published self-serve tiers. Connect financial-data products (account
-  linking, transactions, statements, identity, income, balance) are commonly
-  billed per successful linked account or per data pull, while DirectPay and
-  Direct Debit collections carry a per-transaction fee or percentage. Exact
-  unit prices are negotiated per customer and are not publicly reconciled in
-  this artifact.
-notes: >-
-  Mono does not publish a transparent self-serve price list for the API.
-  Pricing is quoted by Mono sales based on product mix and volume. The
-  entries below mark price as not-published and reconciled is false; verify
-  current rates directly with Mono during reconciliation.
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://mono.co/pricing
 sources:
-- https://mono.co
-- https://docs.mono.co/docs/quickstart
 - https://mono.co/pricing
+provenance:
+  tool: planning/api-economics/harvest_pricing.py
+  run: 20260920T124425
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: tiered-subscription
+published: true
+note: Financial Data pricing in NGN with Regular/Enterprise bands; annual billing shows 5% off. Enterprise
+  band requires contacting sales.
+plan_count: 7
+currency: NGN
 plans:
-- id: mono-co-connect
-  name: Connect (Financial Data)
-  type: usage
-  description: >-
-    Account linking plus access to transactions, statements, identity,
-    income, and balance for linked accounts. Billed per linked account or
-    per data request on a sales-led basis.
-  entries:
-  - label: Account Linking
-    name: account_linking
-    type: usage
-    metric: linked_accounts
-    limit: -1
-    timeFrame: month
-    geo: africa
-    unit: 1
-    price: contact sales (per successful linked account)
-    userMultiplied: false
-  - label: Transactions / Statements
-    name: transactions_statements
-    type: usage
-    metric: requests
-    limit: -1
-    timeFrame: month
-    geo: africa
-    unit: 1
-    price: contact sales
-    userMultiplied: false
-  - label: Identity / Income
-    name: identity_income
-    type: usage
-    metric: requests
-    limit: -1
-    timeFrame: month
-    geo: africa
-    unit: 1
-    price: contact sales
-    userMultiplied: false
-  elements:
-  - name: Account Linking and Auth
-  - name: Account Information
-  - name: Transactions and Statements
-  - name: Identity and Income
-- id: mono-co-directpay
-  name: DirectPay
-  type: usage
-  description: >-
-    One-time bank-to-bank payment collection, typically priced per
-    successful transaction or as a percentage of value. Not publicly
-    reconciled.
-  entries:
-  - label: One-time Payment
-    name: directpay_transaction
-    type: usage
-    metric: transactions
-    limit: -1
-    timeFrame: month
-    geo: africa
-    unit: 1
-    price: contact sales (per-transaction / percentage)
-    userMultiplied: false
-  elements:
-  - name: DirectPay Payments
-- id: mono-co-direct-debit
-  name: Direct Debit
-  type: usage
-  description: >-
-    Recurring mandate-based collections, typically priced per successful
-    debit or as a percentage of value. Not publicly reconciled.
-  entries:
-  - label: Mandate Debit
-    name: direct_debit_transaction
-    type: usage
-    metric: transactions
-    limit: -1
-    timeFrame: month
-    geo: africa
-    unit: 1
-    price: contact sales (per-debit / percentage)
-    userMultiplied: false
-  elements:
-  - name: Direct Debit and Mandates
-- id: mono-co-enterprise
-  name: Enterprise / Sales-Led
-  type: enterprise
-  description: >-
-    Negotiated agreements for volume, additional products (lookup / KYC,
-    payouts, telco data), and dedicated support. Contact Mono sales.
-  entries:
-  - label: Enterprise Agreement
-    name: enterprise
-    type: flat
-    metric: contract
-    limit: -1
-    timeFrame: year
-    geo: africa
-    unit: 1
-    price: contact sales
-    userMultiplied: false
-  elements:
-  - name: Custom Volume Pricing
-  - name: Lookup / KYC
-  - name: Payouts
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
+- name: 30-day trial
+  price_text: FREE
+  period: one-time
+  included_quota: Capped at 5 unique accounts monthly
+- name: Basic
+  price_text: NGN 50,000.00
+  price: 50000
+  currency: NGN
+  period: month
+  unit: monthly account connections
+  included_quota: Capped at 100 unique accounts monthly
+- name: Enterprise band
+  price_text: For more information Contact sales.
+  period: none
+- name: Real-time Sync (add-on)
+  price_text: N100 Per call
+  price: 100
+  currency: NGN
+  period: per-use
+  unit: call
+- name: CAC Lookup (add-on)
+  price_text: N60 - N500 Per call
+  currency: NGN
+  period: per-use
+  unit: call
+- name: CAC Lookup + (add-on)
+  price_text: N600+ Per call
+  price: 600
+  currency: NGN
+  period: per-use
+  unit: call
+- name: Widget customization (add-on)
+  price_text: N50,000 One-time fee
+  price: 50000
+  currency: NGN
+  period: one-time
+rate_limit_statements:
+- Capped at 5 unique accounts monthly
+- Capped at 100 unique accounts monthly

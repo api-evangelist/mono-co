@@ -423,6 +423,8 @@ apis:
   - type: APIReference
     url: https://docs.mono.co/api/lookup/mashup
 common:
+- type: Pricing
+  url: https://mono.co/pricing
 - type: CapabilityMap
   url: capabilities/mono-co-capability-edges.yml
   name: Mono Business Capability Map
