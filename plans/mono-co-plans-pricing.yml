@@ -10,6 +10,10 @@ provenance:
   grounding: every price_text was found verbatim in the fetched page text
 audience: developer-api
 pricing_basis: tiered-subscription
+delivery:
+  delivery: managed
+  method: keyword-prefilter
+  read: '2026-09-20'
 published: true
 note: Financial Data pricing in NGN with Regular/Enterprise bands; annual billing shows 5% off. Enterprise
   band requires contacting sales.
