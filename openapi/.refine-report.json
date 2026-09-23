@@ -1,14 +1,17 @@
 {
   "provider": "mono-co",
   "sources": [
-    "mono-co-account-information-api-openapi.yml",
-    "mono-co-account-linking-api-openapi.yml",
-    "mono-co-direct-debit-api-openapi.yml",
-    "mono-co-directpay-api-openapi.yml",
-    "mono-co-identity-and-income-api-openapi.yml",
-    "mono-co-transactions-and-statements-api-openapi.yml"
+    "_original/mono-africa-creditworthiness-api-openapi.yml",
+    "_original/mono-africa-financial-data-api-openapi.yml",
+    "_original/mono-africa-investment-api-openapi.yml",
+    "_original/mono-africa-lookup-api-openapi.yml",
+    "_original/mono-co-openapi.yml"
   ],
   "outputs": [
+    "mono-co-creditworthiness-api-openapi.yml",
+    "mono-co-financial-data-api-openapi.yml",
+    "mono-co-investment-api-openapi.yml",
+    "mono-co-lookup-api-openapi.yml",
     "mono-co-account-information-api-openapi.yml",
     "mono-co-account-linking-api-openapi.yml",
     "mono-co-direct-debit-api-openapi.yml",
@@ -19,6 +22,23 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (5 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "mono-co-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/mono-africa-connect-api-openapi.yml: archived document superseded by a larger archived document",
+    "mono-co-account-information-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mono-co-account-linking-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mono-co-creditworthiness-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mono-co-direct-debit-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mono-co-directpay-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mono-co-financial-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mono-co-identity-and-income-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mono-co-investment-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mono-co-lookup-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mono-co-transactions-and-statements-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

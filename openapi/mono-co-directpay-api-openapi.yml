@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Mono Account Information DirectPay API
+  title: Mono Direct Pay API
   description: Specification of the Mono open-banking API. Mono lets businesses link customer bank accounts (Connect) to read transactions, statements, identity, income, and balance, and to collect payments via DirectPay one-time transfers and Direct Debit mandates. All requests are authenticated with the secret application key supplied in the mono-sec-key header. Monetary amounts are expressed in the lowest denomination of the currency (e.g. kobo for NGN).
   termsOfService: https://mono.co/legal
   contact:
@@ -66,41 +66,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    PaymentStatus:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            reference:
-              type: string
-            amount:
-              type: integer
-            status:
-              type: string
-              enum:
-              - successful
-              - failed
-              - pending
-              - abandoned
-            currency:
-              type: string
-            created_at:
-              type: string
-              format: date-time
     InitiatePaymentRequest:
       type: object
       required:
@@ -141,6 +106,34 @@ components:
                   type: string
         meta:
           type: object
+    PaymentStatus:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            reference:
+              type: string
+            amount:
+              type: integer
+            status:
+              type: string
+              enum:
+              - successful
+              - failed
+              - pending
+              - abandoned
+            currency:
+              type: string
+            created_at:
+              type: string
+              format: date-time
     InitiatePaymentResponse:
       type: object
       properties:
@@ -161,15 +154,22 @@ components:
               type: string
             customer:
               type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
   responses:
-    Unauthorized:
-      description: Missing or invalid mono-sec-key.
+    NotFound:
+      description: Resource not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
       content:
         application/json:
           schema:

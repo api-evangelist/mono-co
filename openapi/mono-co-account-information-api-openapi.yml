@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Mono Account Information API
   description: Specification of the Mono open-banking API. Mono lets businesses link customer bank accounts (Connect) to read transactions, statements, identity, income, and balance, and to collect payments via DirectPay one-time transfers and Direct Debit mandates. All requests are authenticated with the secret application key supplied in the mono-sec-key header. Monetary amounts are expressed in the lowest denomination of the currency (e.g. kobo for NGN).
@@ -75,20 +75,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    StatusMessage:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
     AccountDetails:
       type: object
       properties:
@@ -145,6 +131,33 @@ components:
               type: integer
             currency:
               type: string
+    StatusMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     AccountId:
       name: id
@@ -153,19 +166,6 @@ components:
       description: The linked account id returned by the exchange-token endpoint.
       schema:
         type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid mono-sec-key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     monoSecKey:
       type: apiKey

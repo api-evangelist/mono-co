@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Mono Account Information Identity and Income API
+  title: Mono Identity and Income API
   description: Specification of the Mono open-banking API. Mono lets businesses link customer bank accounts (Connect) to read transactions, statements, identity, income, and balance, and to collect payments via DirectPay one-time transfers and Direct Debit mandates. All requests are authenticated with the secret application key supplied in the mono-sec-key header. Monetary amounts are expressed in the lowest denomination of the currency (e.g. kobo for NGN).
   termsOfService: https://mono.co/legal
   contact:
@@ -54,14 +54,46 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The linked account id returned by the exchange-token endpoint.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
+    Identity:
       type: object
       properties:
         status:
           type: string
         message:
           type: string
+        data:
+          type: object
+          properties:
+            full_name:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            gender:
+              type: string
+            dob:
+              type: string
+            bvn:
+              type: string
+            marital_status:
+              type: string
     Income:
       type: object
       properties:
@@ -89,45 +121,13 @@ components:
                     type: number
                   frequency:
                     type: string
-    Identity:
+    Error:
       type: object
       properties:
         status:
           type: string
         message:
           type: string
-        data:
-          type: object
-          properties:
-            full_name:
-              type: string
-            email:
-              type: string
-            phone:
-              type: string
-            gender:
-              type: string
-            dob:
-              type: string
-            bvn:
-              type: string
-            marital_status:
-              type: string
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The linked account id returned by the exchange-token endpoint.
-      schema:
-        type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid mono-sec-key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     monoSecKey:
       type: apiKey

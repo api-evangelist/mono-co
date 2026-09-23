@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Mono Account Information Account Linking API
+  title: Mono Account Linking API
   description: Specification of the Mono open-banking API. Mono lets businesses link customer bank accounts (Connect) to read transactions, statements, identity, income, and balance, and to collect payments via DirectPay one-time transfers and Direct Debit mandates. All requests are authenticated with the secret application key supplied in the mono-sec-key header. Monetary amounts are expressed in the lowest denomination of the currency (e.g. kobo for NGN).
   termsOfService: https://mono.co/legal
   contact:
@@ -63,13 +63,20 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Error:
+    ExchangeTokenResponse:
       type: object
       properties:
-        status:
+        id:
           type: string
-        message:
+          description: The persistent account id.
+    ExchangeTokenRequest:
+      type: object
+      required:
+      - code
+      properties:
+        code:
           type: string
+          description: The authorization code returned by the Connect widget.
     InitiateAccountRequest:
       type: object
       properties:
@@ -90,20 +97,6 @@ components:
           example: auth
         redirect_url:
           type: string
-    ExchangeTokenResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The persistent account id.
-    ExchangeTokenRequest:
-      type: object
-      required:
-      - code
-      properties:
-        code:
-          type: string
-          description: The authorization code returned by the Connect widget.
     InitiateAccountResponse:
       type: object
       properties:
@@ -120,6 +113,13 @@ components:
               type: string
             meta:
               type: object
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
   responses:
     Unauthorized:
       description: Missing or invalid mono-sec-key.
