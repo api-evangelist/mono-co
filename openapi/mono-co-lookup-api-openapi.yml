@@ -101,13 +101,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
     BvnInitiateRequest:
       type: object
       required:
@@ -130,6 +123,13 @@ components:
           type: string
           description: The bank/institution NIP code.
         account_number:
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
           type: string
   responses:
     Unauthorized:

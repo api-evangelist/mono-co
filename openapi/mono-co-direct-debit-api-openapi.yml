@@ -127,6 +127,146 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    Balance:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            account_number:
+              type: string
+            balance:
+              type: integer
+            currency:
+              type: string
+    CustomerList:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+    DebitMandateRequest:
+      type: object
+      required:
+      - amount
+      - reference
+      properties:
+        amount:
+          type: integer
+        reference:
+          type: string
+        narration:
+          type: string
+    Customer:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+            type:
+              type: string
+    InitiateMandateRequest:
+      type: object
+      required:
+      - amount
+      - type
+      - mandate_type
+      - reference
+      properties:
+        amount:
+          type: integer
+        type:
+          type: string
+          example: recurring-debit
+        method:
+          type: string
+          example: mandate
+        mandate_type:
+          type: string
+          enum:
+          - emandate
+          - signed
+          - gsm
+        debit_type:
+          type: string
+          enum:
+          - fixed
+          - variable
+        description:
+          type: string
+        reference:
+          type: string
+        redirect_url:
+          type: string
+        customer:
+          type: object
+          properties:
+            id:
+              type: string
+        account_number:
+          type: string
+        bank_code:
+          type: string
+        start_date:
+          type: string
+        end_date:
+          type: string
+        meta:
+          type: object
+    InitiateMandateResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            mono_url:
+              type: string
+            mandate_type:
+              type: string
+            reference:
+              type: string
+            status:
+              type: string
     PaymentStatus:
       type: object
       properties:
@@ -182,146 +322,14 @@ components:
           type: string
         business_name:
           type: string
-    Balance:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-            account_number:
-              type: string
-            balance:
-              type: integer
-            currency:
-              type: string
-    InitiateMandateRequest:
-      type: object
-      required:
-      - amount
-      - type
-      - mandate_type
-      - reference
-      properties:
-        amount:
-          type: integer
-        type:
-          type: string
-          example: recurring-debit
-        method:
-          type: string
-          example: mandate
-        mandate_type:
-          type: string
-          enum:
-          - emandate
-          - signed
-          - gsm
-        debit_type:
-          type: string
-          enum:
-          - fixed
-          - variable
-        description:
-          type: string
-        reference:
-          type: string
-        redirect_url:
-          type: string
-        customer:
-          type: object
-          properties:
-            id:
-              type: string
-        account_number:
-          type: string
-        bank_code:
-          type: string
-        start_date:
-          type: string
-        end_date:
-          type: string
-        meta:
-          type: object
-    DebitMandateRequest:
-      type: object
-      required:
-      - amount
-      - reference
-      properties:
-        amount:
-          type: integer
-        reference:
-          type: string
-        narration:
-          type: string
-    InitiateMandateResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            mono_url:
-              type: string
-            mandate_type:
-              type: string
-            reference:
-              type: string
-            status:
-              type: string
-    CustomerList:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
-    Customer:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            email:
-              type: string
-            phone:
-              type: string
-            first_name:
-              type: string
-            last_name:
-              type: string
-            type:
-              type: string
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
+  parameters:
+    MandateId:
+      name: id
+      in: path
+      required: true
+      description: The direct-debit mandate id.
+      schema:
+        type: string
   responses:
     NotFound:
       description: Resource not found.
@@ -335,14 +343,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    MandateId:
-      name: id
-      in: path
-      required: true
-      description: The direct-debit mandate id.
-      schema:
-        type: string
   securitySchemes:
     monoSecKey:
       type: apiKey

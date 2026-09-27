@@ -42,19 +42,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    CreditworthinessRequest:
+    Error:
       type: object
       properties:
-        principal:
-          type: number
-          description: Requested loan principal to evaluate affordability against.
-        interest_rate:
-          type: number
-        term:
-          type: integer
-          description: Loan term in months.
-        run_credit_check:
-          type: boolean
+        status:
+          type: string
+        message:
+          type: string
     CreditworthinessResponse:
       type: object
       properties:
@@ -69,13 +63,26 @@ components:
               type: object
             risk_bands:
               type: object
-    Error:
+    CreditworthinessRequest:
       type: object
       properties:
-        status:
-          type: string
-        message:
-          type: string
+        principal:
+          type: number
+          description: Requested loan principal to evaluate affordability against.
+        interest_rate:
+          type: number
+        term:
+          type: integer
+          description: Loan term in months.
+        run_credit_check:
+          type: boolean
+  responses:
+    Unauthorized:
+      description: The `mono-sec-key` is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     AccountId:
       name: id
@@ -84,13 +91,6 @@ components:
       description: The permanent account id returned by the exchange-token endpoint.
       schema:
         type: string
-  responses:
-    Unauthorized:
-      description: The `mono-sec-key` is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     monoSecKey:
       type: apiKey

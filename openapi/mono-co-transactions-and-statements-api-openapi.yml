@@ -100,22 +100,32 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The linked account id returned by the exchange-token endpoint.
-      schema:
-        type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid mono-sec-key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    Statement:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            account:
+              type: object
+            balance:
+              type: integer
+            transactions:
+              type: array
+              items:
+                $ref: '#/components/schemas/Transaction'
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     Transaction:
       type: object
       properties:
@@ -137,24 +147,6 @@ components:
           format: date-time
         category:
           type: string
-    Statement:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            account:
-              type: object
-            balance:
-              type: integer
-            transactions:
-              type: array
-              items:
-                $ref: '#/components/schemas/Transaction'
     TransactionList:
       type: object
       properties:
@@ -173,13 +165,21 @@ components:
               type: integer
             page:
               type: integer
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The linked account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   securitySchemes:
     monoSecKey:
       type: apiKey

@@ -63,20 +63,19 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     ExchangeTokenResponse:
       type: object
       properties:
         id:
           type: string
           description: The persistent account id.
-    ExchangeTokenRequest:
-      type: object
-      required:
-      - code
-      properties:
-        code:
-          type: string
-          description: The authorization code returned by the Connect widget.
     InitiateAccountRequest:
       type: object
       properties:
@@ -97,6 +96,14 @@ components:
           example: auth
         redirect_url:
           type: string
+    ExchangeTokenRequest:
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          type: string
+          description: The authorization code returned by the Connect widget.
     InitiateAccountResponse:
       type: object
       properties:
@@ -113,13 +120,6 @@ components:
               type: string
             meta:
               type: object
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
   responses:
     Unauthorized:
       description: Missing or invalid mono-sec-key.

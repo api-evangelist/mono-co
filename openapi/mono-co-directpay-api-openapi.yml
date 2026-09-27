@@ -66,6 +66,13 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     InitiatePaymentRequest:
       type: object
       required:
@@ -154,22 +161,15 @@ components:
               type: string
             customer:
               type: string
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
   responses:
-    NotFound:
-      description: Resource not found.
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid mono-sec-key.
+    NotFound:
+      description: Resource not found.
       content:
         application/json:
           schema:

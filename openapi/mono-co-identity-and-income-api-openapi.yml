@@ -54,46 +54,14 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The linked account id returned by the exchange-token endpoint.
-      schema:
-        type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid mono-sec-key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Identity:
+    Error:
       type: object
       properties:
         status:
           type: string
         message:
           type: string
-        data:
-          type: object
-          properties:
-            full_name:
-              type: string
-            email:
-              type: string
-            phone:
-              type: string
-            gender:
-              type: string
-            dob:
-              type: string
-            bvn:
-              type: string
-            marital_status:
-              type: string
     Income:
       type: object
       properties:
@@ -121,13 +89,45 @@ components:
                     type: number
                   frequency:
                     type: string
-    Error:
+    Identity:
       type: object
       properties:
         status:
           type: string
         message:
           type: string
+        data:
+          type: object
+          properties:
+            full_name:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            gender:
+              type: string
+            dob:
+              type: string
+            bvn:
+              type: string
+            marital_status:
+              type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The linked account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   securitySchemes:
     monoSecKey:
       type: apiKey
