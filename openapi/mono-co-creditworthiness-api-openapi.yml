@@ -41,14 +41,15 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The permanent account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   schemas:
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
     CreditworthinessResponse:
       type: object
       properties:
@@ -76,6 +77,13 @@ components:
           description: Loan term in months.
         run_credit_check:
           type: boolean
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
   responses:
     Unauthorized:
       description: The `mono-sec-key` is missing or invalid.
@@ -83,14 +91,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The permanent account id returned by the exchange-token endpoint.
-      schema:
-        type: string
   securitySchemes:
     monoSecKey:
       type: apiKey

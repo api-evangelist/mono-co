@@ -54,14 +54,15 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The linked account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   schemas:
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
     Income:
       type: object
       properties:
@@ -89,6 +90,13 @@ components:
                     type: number
                   frequency:
                     type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     Identity:
       type: object
       properties:
@@ -120,14 +128,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The linked account id returned by the exchange-token endpoint.
-      schema:
-        type: string
   securitySchemes:
     monoSecKey:
       type: apiKey

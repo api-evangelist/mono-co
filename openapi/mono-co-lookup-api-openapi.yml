@@ -101,18 +101,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    BvnInitiateRequest:
-      type: object
-      required:
-      - bvn
-      - scope
-      properties:
-        bvn:
-          type: string
-          description: The Bank Verification Number to verify.
-        scope:
-          type: string
-          description: The consent scope, e.g. `identity`.
     AccountNumberLookupRequest:
       type: object
       required:
@@ -131,6 +119,18 @@ components:
           type: string
         message:
           type: string
+    BvnInitiateRequest:
+      type: object
+      required:
+      - bvn
+      - scope
+      properties:
+        bvn:
+          type: string
+          description: The Bank Verification Number to verify.
+        scope:
+          type: string
+          description: The consent scope, e.g. `identity`.
   responses:
     Unauthorized:
       description: The `mono-sec-key` is missing or invalid.

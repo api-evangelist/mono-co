@@ -64,13 +64,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
     Asset:
       type: object
       properties:
@@ -86,13 +79,13 @@ components:
           type: number
         currency:
           type: string
-  responses:
-    Unauthorized:
-      description: The `mono-sec-key` is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
   parameters:
     AccountId:
       name: id
@@ -101,6 +94,13 @@ components:
       description: The permanent account id returned by the exchange-token endpoint.
       schema:
         type: string
+  responses:
+    Unauthorized:
+      description: The `mono-sec-key` is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     monoSecKey:
       type: apiKey

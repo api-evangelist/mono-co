@@ -217,30 +217,27 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The permanent account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   schemas:
-    Statement:
+    Balance:
       type: object
       properties:
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-        account:
-          $ref: '#/components/schemas/Account'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
-        path:
+        id:
           type: string
-          description: When output=pdf, the path/URL to poll for the generated PDF.
-    Error:
-      type: object
-      properties:
-        status:
+        name:
           type: string
-        message:
+        account_number:
+          type: string
+        balance:
+          type: integer
+        currency:
           type: string
     Income:
       type: object
@@ -257,18 +254,24 @@ components:
           type: string
         last_income_date:
           type: string
-    Balance:
+    Identity:
       type: object
       properties:
-        id:
+        full_name:
           type: string
-        name:
+        email:
           type: string
-        account_number:
+        phone:
           type: string
-        balance:
-          type: integer
-        currency:
+        gender:
+          type: string
+        dob:
+          type: string
+        bvn:
+          type: string
+        marital_status:
+          type: string
+        address_line1:
           type: string
     Transaction:
       type: object
@@ -292,24 +295,29 @@ components:
           format: date-time
         category:
           type: string
-    Identity:
+    Statement:
       type: object
       properties:
-        full_name:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+        account:
+          $ref: '#/components/schemas/Account'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+        path:
           type: string
-        email:
+          description: When output=pdf, the path/URL to poll for the generated PDF.
+    Error:
+      type: object
+      properties:
+        status:
           type: string
-        phone:
-          type: string
-        gender:
-          type: string
-        dob:
-          type: string
-        bvn:
-          type: string
-        marital_status:
-          type: string
-        address_line1:
+        message:
           type: string
     Account:
       type: object
@@ -338,26 +346,18 @@ components:
             type:
               type: string
   responses:
-    Unauthorized:
-      description: The `mono-sec-key` is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The permanent account id returned by the exchange-token endpoint.
-      schema:
-        type: string
+    Unauthorized:
+      description: The `mono-sec-key` is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     monoSecKey:
       type: apiKey
