@@ -217,43 +217,33 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The permanent account id returned by the exchange-token endpoint.
-      schema:
-        type: string
   schemas:
-    Balance:
+    Account:
       type: object
       properties:
         id:
           type: string
         name:
           type: string
+        currency:
+          type: string
+        type:
+          type: string
         account_number:
           type: string
         balance:
-          type: integer
-        currency:
-          type: string
-    Income:
-      type: object
-      properties:
-        type:
-          type: string
-        amount:
           type: number
-        employer:
+        bvn:
           type: string
-        employment_status:
-          type: string
-        income_confidence:
-          type: string
-        last_income_date:
-          type: string
+        institution:
+          type: object
+          properties:
+            name:
+              type: string
+            bank_code:
+              type: string
+            type:
+              type: string
     Identity:
       type: object
       properties:
@@ -295,6 +285,34 @@ components:
           format: date-time
         category:
           type: string
+    Balance:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        account_number:
+          type: string
+        balance:
+          type: integer
+        currency:
+          type: string
+    Income:
+      type: object
+      properties:
+        type:
+          type: string
+        amount:
+          type: number
+        employer:
+          type: string
+        employment_status:
+          type: string
+        income_confidence:
+          type: string
+        last_income_date:
+          type: string
     Statement:
       type: object
       properties:
@@ -319,41 +337,23 @@ components:
           type: string
         message:
           type: string
-    Account:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        currency:
-          type: string
-        type:
-          type: string
-        account_number:
-          type: string
-        balance:
-          type: number
-        bvn:
-          type: string
-        institution:
-          type: object
-          properties:
-            name:
-              type: string
-            bank_code:
-              type: string
-            type:
-              type: string
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The permanent account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   responses:
-    NotFound:
-      description: The requested resource was not found.
+    Unauthorized:
+      description: The `mono-sec-key` is missing or invalid.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: The `mono-sec-key` is missing or invalid.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:

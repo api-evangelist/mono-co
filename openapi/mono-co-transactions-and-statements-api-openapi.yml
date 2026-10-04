@@ -109,24 +109,6 @@ components:
       schema:
         type: string
   schemas:
-    TransactionList:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
-        meta:
-          type: object
-          properties:
-            total:
-              type: integer
-            page:
-              type: integer
     Transaction:
       type: object
       properties:
@@ -148,6 +130,24 @@ components:
           format: date-time
         category:
           type: string
+    TransactionList:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+        meta:
+          type: object
+          properties:
+            total:
+              type: integer
+            page:
+              type: integer
     Statement:
       type: object
       properties:

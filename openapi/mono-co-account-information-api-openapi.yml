@@ -74,15 +74,14 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The linked account id returned by the exchange-token endpoint.
-      schema:
-        type: string
   schemas:
+    StatusMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     Balance:
       type: object
       properties:
@@ -103,20 +102,6 @@ components:
               type: integer
             currency:
               type: string
-    StatusMessage:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
     AccountDetails:
       type: object
       properties:
@@ -153,15 +138,30 @@ components:
                   type: string
                 type:
                   type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The linked account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   responses:
-    NotFound:
-      description: Resource not found.
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid mono-sec-key.
+    NotFound:
+      description: Resource not found.
       content:
         application/json:
           schema:

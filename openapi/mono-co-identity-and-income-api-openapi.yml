@@ -54,15 +54,31 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The linked account id returned by the exchange-token endpoint.
-      schema:
-        type: string
   schemas:
+    Identity:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            full_name:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            gender:
+              type: string
+            dob:
+              type: string
+            bvn:
+              type: string
+            marital_status:
+              type: string
     Income:
       type: object
       properties:
@@ -97,30 +113,14 @@ components:
           type: string
         message:
           type: string
-    Identity:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            full_name:
-              type: string
-            email:
-              type: string
-            phone:
-              type: string
-            gender:
-              type: string
-            dob:
-              type: string
-            bvn:
-              type: string
-            marital_status:
-              type: string
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The linked account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   responses:
     Unauthorized:
       description: Missing or invalid mono-sec-key.
