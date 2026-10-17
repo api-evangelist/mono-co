@@ -63,6 +63,43 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    ExchangeTokenResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The persistent account id.
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    ExchangeTokenRequest:
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          type: string
+          description: The authorization code returned by the Connect widget.
+    InitiateAccountResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            mono_url:
+              type: string
+            customer:
+              type: string
+            meta:
+              type: object
     InitiateAccountRequest:
       type: object
       properties:
@@ -83,43 +120,6 @@ components:
           example: auth
         redirect_url:
           type: string
-    ExchangeTokenRequest:
-      type: object
-      required:
-      - code
-      properties:
-        code:
-          type: string
-          description: The authorization code returned by the Connect widget.
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    InitiateAccountResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            mono_url:
-              type: string
-            customer:
-              type: string
-            meta:
-              type: object
-    ExchangeTokenResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The persistent account id.
   responses:
     Unauthorized:
       description: Missing or invalid mono-sec-key.

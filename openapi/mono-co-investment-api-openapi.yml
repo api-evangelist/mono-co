@@ -63,6 +63,13 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: The `mono-sec-key` is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     Asset:
       type: object
@@ -86,13 +93,6 @@ components:
           type: string
         message:
           type: string
-  responses:
-    Unauthorized:
-      description: The `mono-sec-key` is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
     AccountId:
       name: id

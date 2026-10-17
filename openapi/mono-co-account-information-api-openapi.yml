@@ -74,34 +74,28 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The linked account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   schemas:
-    StatusMessage:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-    Balance:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-            account_number:
-              type: string
-            balance:
-              type: integer
-            currency:
-              type: string
     AccountDetails:
       type: object
       properties:
@@ -145,27 +139,33 @@ components:
           type: string
         message:
           type: string
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The linked account id returned by the exchange-token endpoint.
-      schema:
-        type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid mono-sec-key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    StatusMessage:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    Balance:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            account_number:
+              type: string
+            balance:
+              type: integer
+            currency:
+              type: string
   securitySchemes:
     monoSecKey:
       type: apiKey

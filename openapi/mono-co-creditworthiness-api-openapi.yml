@@ -41,15 +41,27 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The permanent account id returned by the exchange-token endpoint.
-      schema:
-        type: string
+  responses:
+    Unauthorized:
+      description: The `mono-sec-key` is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    CreditworthinessRequest:
+      type: object
+      properties:
+        principal:
+          type: number
+          description: Requested loan principal to evaluate affordability against.
+        interest_rate:
+          type: number
+        term:
+          type: integer
+          description: Loan term in months.
+        run_credit_check:
+          type: boolean
     CreditworthinessResponse:
       type: object
       properties:
@@ -64,19 +76,6 @@ components:
               type: object
             risk_bands:
               type: object
-    CreditworthinessRequest:
-      type: object
-      properties:
-        principal:
-          type: number
-          description: Requested loan principal to evaluate affordability against.
-        interest_rate:
-          type: number
-        term:
-          type: integer
-          description: Loan term in months.
-        run_credit_check:
-          type: boolean
     Error:
       type: object
       properties:
@@ -84,13 +83,14 @@ components:
           type: string
         message:
           type: string
-  responses:
-    Unauthorized:
-      description: The `mono-sec-key` is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The permanent account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   securitySchemes:
     monoSecKey:
       type: apiKey

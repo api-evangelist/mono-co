@@ -126,7 +126,48 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    PaymentStatus:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            reference:
+              type: string
+            amount:
+              type: integer
+            status:
+              type: string
+              enum:
+              - successful
+              - failed
+              - pending
+              - abandoned
+            currency:
+              type: string
+            created_at:
+              type: string
+              format: date-time
     InitiateMandateRequest:
       type: object
       required:
@@ -195,99 +236,6 @@ components:
               type: string
             status:
               type: string
-    Customer:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            email:
-              type: string
-            phone:
-              type: string
-            first_name:
-              type: string
-            last_name:
-              type: string
-            type:
-              type: string
-    PaymentStatus:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            reference:
-              type: string
-            amount:
-              type: integer
-            status:
-              type: string
-              enum:
-              - successful
-              - failed
-              - pending
-              - abandoned
-            currency:
-              type: string
-            created_at:
-              type: string
-              format: date-time
-    Balance:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-            account_number:
-              type: string
-            balance:
-              type: integer
-            currency:
-              type: string
-    CustomerList:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
-    DebitMandateRequest:
-      type: object
-      required:
-      - amount
-      - reference
-      properties:
-        amount:
-          type: integer
-        reference:
-          type: string
-        narration:
-          type: string
     CreateCustomerRequest:
       type: object
       properties:
@@ -315,6 +263,18 @@ components:
           type: string
         business_name:
           type: string
+    DebitMandateRequest:
+      type: object
+      required:
+      - amount
+      - reference
+      properties:
+        amount:
+          type: integer
+        reference:
+          type: string
+        narration:
+          type: string
     Error:
       type: object
       properties:
@@ -322,6 +282,59 @@ components:
           type: string
         message:
           type: string
+    Customer:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+            type:
+              type: string
+    CustomerList:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+    Balance:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            account_number:
+              type: string
+            balance:
+              type: integer
+            currency:
+              type: string
   parameters:
     MandateId:
       name: id
@@ -330,19 +343,6 @@ components:
       description: The direct-debit mandate id.
       schema:
         type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid mono-sec-key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     monoSecKey:
       type: apiKey

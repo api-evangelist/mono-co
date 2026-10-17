@@ -218,6 +218,28 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        narration:
+          type: string
+        amount:
+          type: integer
+          description: Amount in the account's minor currency unit (kobo for NGN).
+        type:
+          type: string
+          enum:
+          - debit
+          - credit
+        balance:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        category:
+          type: string
     Account:
       type: object
       properties:
@@ -244,6 +266,58 @@ components:
               type: string
             type:
               type: string
+    Income:
+      type: object
+      properties:
+        type:
+          type: string
+        amount:
+          type: number
+        employer:
+          type: string
+        employment_status:
+          type: string
+        income_confidence:
+          type: string
+        last_income_date:
+          type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    Statement:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+        account:
+          $ref: '#/components/schemas/Account'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+        path:
+          type: string
+          description: When output=pdf, the path/URL to poll for the generated PDF.
+    Balance:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        account_number:
+          type: string
+        balance:
+          type: integer
+        currency:
+          type: string
     Identity:
       type: object
       properties:
@@ -263,88 +337,6 @@ components:
           type: string
         address_line1:
           type: string
-    Transaction:
-      type: object
-      properties:
-        id:
-          type: string
-        narration:
-          type: string
-        amount:
-          type: integer
-          description: Amount in the account's minor currency unit (kobo for NGN).
-        type:
-          type: string
-          enum:
-          - debit
-          - credit
-        balance:
-          type: integer
-        date:
-          type: string
-          format: date-time
-        category:
-          type: string
-    Balance:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        account_number:
-          type: string
-        balance:
-          type: integer
-        currency:
-          type: string
-    Income:
-      type: object
-      properties:
-        type:
-          type: string
-        amount:
-          type: number
-        employer:
-          type: string
-        employment_status:
-          type: string
-        income_confidence:
-          type: string
-        last_income_date:
-          type: string
-    Statement:
-      type: object
-      properties:
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-        account:
-          $ref: '#/components/schemas/Account'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
-        path:
-          type: string
-          description: When output=pdf, the path/URL to poll for the generated PDF.
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-  parameters:
-    AccountId:
-      name: id
-      in: path
-      required: true
-      description: The permanent account id returned by the exchange-token endpoint.
-      schema:
-        type: string
   responses:
     Unauthorized:
       description: The `mono-sec-key` is missing or invalid.
@@ -358,6 +350,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      description: The permanent account id returned by the exchange-token endpoint.
+      schema:
+        type: string
   securitySchemes:
     monoSecKey:
       type: apiKey

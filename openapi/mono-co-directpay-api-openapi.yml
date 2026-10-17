@@ -65,6 +65,19 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid mono-sec-key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     PaymentStatus:
       type: object
@@ -94,6 +107,33 @@ components:
             created_at:
               type: string
               format: date-time
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+    InitiatePaymentResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            mono_url:
+              type: string
+            type:
+              type: string
+            reference:
+              type: string
+            customer:
+              type: string
     InitiatePaymentRequest:
       type: object
       required:
@@ -134,46 +174,6 @@ components:
                   type: string
         meta:
           type: object
-    InitiatePaymentResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            mono_url:
-              type: string
-            type:
-              type: string
-            reference:
-              type: string
-            customer:
-              type: string
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid mono-sec-key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     monoSecKey:
       type: apiKey

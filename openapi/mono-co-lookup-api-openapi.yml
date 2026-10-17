@@ -100,7 +100,21 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: The `mono-sec-key` is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
     AccountNumberLookupRequest:
       type: object
       required:
@@ -124,20 +138,6 @@ components:
         scope:
           type: string
           description: The consent scope, e.g. `identity`.
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-  responses:
-    Unauthorized:
-      description: The `mono-sec-key` is missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     monoSecKey:
       type: apiKey
