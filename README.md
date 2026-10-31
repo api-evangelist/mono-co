@@ -1,4 +1,4 @@
-# Mono (mono-co)
+# Mono
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,181 +66,132 @@
 
 Mono is an African open-banking platform that lets businesses access bank and financial data and collect recurring payments through a single API. The Mono REST API at api.withmono.com covers account linking (Connect), transactions, statements, identity, income, and balance, plus DirectPay one-time payments and Direct Debit mandates, secured with a mono-sec-key header.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/mono-co/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/mono-co/refs/heads/main/apis.yml)
+**Areas:** Open Banking · Financial Data · Payments · Direct Debit · Africa
 
-## Tags
+## Mono on APIs.io
 
-- Open Banking
-- Financial Data
-- Payments
-- Direct Debit
-- Africa
+Everything profiled for Mono is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/mono-co/](https://apis.io/providers/mono-co/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (10)
 
-- **Created:** 2026-06-21
-- **Modified:** 2026-06-21
+- [Mono Account Information API](https://apis.io/apis/mono-co/mono-co-account-information-api/) — Account details and balance for a linked account.
+- [Mono Account Linking API](https://apis.io/apis/mono-co/mono-co-account-linking-api/) — Initiate Connect account linking and exchange a code for an account id.
+- [Mono Direct Debit API](https://apis.io/apis/mono-co/mono-co-direct-debit-api/) — Customers, mandates, balance inquiry, and recurring debits.
+- [Mono DirectPay API](https://apis.io/apis/mono-co/mono-co-directpay-api/) — One-time bank-to-bank payments.
+- [Mono Identity and Income API](https://apis.io/apis/mono-co/mono-co-identity-and-income-api/) — Identity verification and income signals for a linked account.
+- [Mono Transactions and Statements API](https://apis.io/apis/mono-co/mono-co-transactions-and-statements-api/) — Transactions and bank statements for a linked account.
+- [Mono Creditworthiness API](https://apis.io/apis/mono-co/mono-co-creditworthiness-api/) — Affordability and credit-decisioning analysis.
+- [Mono Financial Data API](https://apis.io/apis/mono-co/mono-co-financial-data-api/) — Read financial data from a linked account.
+- [Mono Investment API](https://apis.io/apis/mono-co/mono-co-investment-api/) — Investment holdings for a linked account.
+- [Mono Lookup API](https://apis.io/apis/mono-co/mono-co-lookup-api/) — Identity and data verification for KYC/KYB.
 
-## APIs
+### Published properties
 
-### Account Linking and Auth
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Initiate Mono Connect account linking and exchange the returned code for a persistent account id, instantiating the bank-data connection used by all downstream account endpoints.
+#### Agentic access (1)
 
-- **Human URL:** [https://docs.mono.co/docs/financial-data/overview](https://docs.mono.co/docs/financial-data/overview)
-- **Base URL:** `https://api.withmono.com`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Mono Co Agentic Access](https://apis.io/agentic-access/mono-co/mono-co-agentic-access/)
 
-- Account Linking
-- Authorization
-- Connect
+#### Collections (8)
 
-#### Properties
+Postman and Open Collection request collections.
 
-- [Documentation](https://docs.mono.co/docs/financial-data/integration-guide)
-- [API Reference](https://docs.mono.co/api/bank-data/authorisation/initiate-account-linking)
-- [OpenAPI](openapi/mono-co-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/mono-co.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/mono-co.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Mono API](https://apis.io/collections/mono-co/open-mono-africa/)
+- [Mono API](https://apis.io/collections/mono-co/open-mono-co/)
+- [Mono Account Information API](https://apis.io/collections/mono-co/open-mono-co-account-information-api/)
+- [Mono Account Information Account Linking API](https://apis.io/collections/mono-co/open-mono-co-account-linking-api/)
+- [Mono Account Information Direct Debit API](https://apis.io/collections/mono-co/open-mono-co-direct-debit-api/)
+- [Mono Account Information DirectPay API](https://apis.io/collections/mono-co/open-mono-co-directpay-api/)
+- [Mono Account Information Identity and Income API](https://apis.io/collections/mono-co/open-mono-co-identity-and-income-api/)
+- [Mono Account Information Transactions and Statements API](https://apis.io/collections/mono-co/open-mono-co-transactions-and-statements-api/)
 
-### Account Information
+#### Security (2)
 
-Retrieve account details and a near-real-time account balance for a linked account by its account id.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://docs.mono.co/docs/financial-data/overview](https://docs.mono.co/docs/financial-data/overview)
-- **Base URL:** `https://api.withmono.com`
+- [Mono Co Authentication](https://apis.io/security/mono-co/mono-co-authentication/)
+- [Mono Co Domain Security](https://apis.io/security/mono-co/mono-co-domain-security/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- Account Information
-- Balance
-- Connect
+Published plans, tiers and prices.
 
-#### Properties
+- [Mono Co Plans Pricing](https://apis.io/plans/mono-co/mono-co-plans-pricing/)
 
-- [Documentation](https://docs.mono.co/docs/financial-data/overview)
-- [API Reference](https://docs.mono.co/api/bank-data/accounts/details)
-- [OpenAPI](openapi/mono-co-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/mono-co.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/mono-co.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Rate limits (1)
 
-### Transactions and Statements
+Published request limits.
 
-Pull money-in and money-out transactions with date, type, and narration filters, and retrieve a customer's bank statement in JSON or PDF form for a linked account.
+- [Mono Co Rate Limits](https://apis.io/rate-limits/mono-co/mono-co-rate-limits/)
 
-- **Human URL:** [https://docs.mono.co/api/bank-data/transactions](https://docs.mono.co/api/bank-data/transactions)
-- **Base URL:** `https://api.withmono.com`
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Transactions
-- Statements
-- Financial Data
+- [Mono Co Finops](https://apis.io/finops/mono-co/mono-co-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://docs.mono.co/api/bank-data/transactions)
-- [API Reference](https://docs.mono.co/api/bank-data/transactions)
-- [OpenAPI](openapi/mono-co-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/mono-co.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/mono-co.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Identity and Income
-
-Verify a linked account holder's identity (name, phone, date of birth, BVN) and retrieve income signals including estimated salary and income sources derived from financial data.
-
-- **Human URL:** [https://docs.mono.co/api/bank-data/accounts/identity](https://docs.mono.co/api/bank-data/accounts/identity)
-- **Base URL:** `https://api.withmono.com`
-
-#### Tags
-
-- Identity
-- Income
-- KYC
-
-#### Properties
-
-- [Documentation](https://docs.mono.co/api/bank-data/accounts/identity)
-- [API Reference](https://docs.mono.co/api/bank-data/accounts/income)
-- [OpenAPI](openapi/mono-co-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/mono-co.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/mono-co.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### DirectPay Payments
-
-Initiate one-time bank-to-bank DirectPay payments and verify their status, returning a hosted payment link for the customer to authorize.
-
-- **Human URL:** [https://docs.mono.co/docs/payments/overview](https://docs.mono.co/docs/payments/overview)
-- **Base URL:** `https://api.withmono.com`
-
-#### Tags
-
-- Payments
-- DirectPay
-- Bank Transfer
-
-#### Properties
-
-- [Documentation](https://docs.mono.co/docs/payments/overview)
-- [API Reference](https://docs.mono.co/api/directpay/initiate)
-- [OpenAPI](openapi/mono-co-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/mono-co.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/mono-co.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Direct Debit and Mandates
-
-Create customers, set up fixed or variable direct-debit mandates on a customer's bank account, run a confirmation-of-funds balance inquiry, and debit an authorized mandate for recurring collections.
-
-- **Human URL:** [https://docs.mono.co/docs/payments/direct-debit/overview](https://docs.mono.co/docs/payments/direct-debit/overview)
-- **Base URL:** `https://api.withmono.com`
-
-#### Tags
-
-- Direct Debit
-- Mandates
-- Recurring Payments
-
-#### Properties
-
-- [Documentation](https://docs.mono.co/docs/payments/direct-debit/overview)
-- [API Reference](https://docs.mono.co/api/direct-debit/mandate/initiate-mandate-authorisation)
-- [OpenAPI](openapi/mono-co-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/mono-co.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/mono-co.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Webhooks
-
-Server-to-server webhook callbacks for Connect account events (connected, updated, reauthorisation required, unlinked) and payment events (DirectPay and Direct Debit success and failure), delivered as POST requests with a shared event/data/timestamp payload.
-
-- **Human URL:** [https://docs.mono.co/docs/webhooks](https://docs.mono.co/docs/webhooks)
-- **Base URL:** `https://api.withmono.com`
-
-#### Tags
-
-- Webhooks
-- Events
-- Notifications
-
-#### Properties
-
-- [Documentation](https://docs.mono.co/docs/webhooks)
-- [API Reference](https://docs.mono.co/docs/payments/direct-debit/webhook-events)
-- [OpenAPI](openapi/mono-co-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/mono-co.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/mono-co.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/withmono)
-- [LinkedIn](https://www.linkedin.com/company/mono-hq)
 - [Website](https://mono.co)
 - [Documentation](https://docs.mono.co)
-- [Plans](plans/mono-co-plans-pricing.yml)
-- [Rate Limits](rate-limits/mono-co-rate-limits.yml)
-- [Fin Ops](finops/mono-co-finops.yml)
+- [Pricing](https://mono.co/pricing)
+- [Blog](https://mono.co/blog)
+- [GitHub](https://github.com/withmono)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 30.6** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.4 |
+| Contract quality | 38.3 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 42.1 |
+
+**Agent readiness 17.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 9.4** — Banking & Open Finance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/mono-co/](https://apis.io/providers/mono-co/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Mono: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/mono-co/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
